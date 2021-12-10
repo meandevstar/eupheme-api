@@ -1,0 +1,7 @@
+# Ignore dependencies
+node_modules
+
+# Ignore temp files
+dump
+images
+logs

@@ -1,0 +1,36 @@
+# Dockerfile used for production
+
+FROM node:16.9.1-alpine
+
+RUN apk --update add bash && \
+    apk add --no-cache dos2unix curl git make file nginx
+
+RUN file --version
+
+RUN yarn global add pm2
+RUN yarn global add concurrently
+
+WORKDIR /app
+
+COPY ./package.json ./package.json
+COPY ./yarn.lock ./yarn.lock
+COPY src ./src
+COPY .creds ./.creds
+
+COPY ./tsconfig.json ./tsconfig.json
+
+RUN yarn install
+RUN yarn build
+
+CMD []
+COPY ./entrypoint.sh ./entrypoint.sh
+COPY ./.nginx/nginx.conf /etc/nginx
+
+RUN chmod +x ./entrypoint.sh
+RUN dos2unix ./entrypoint.sh
+
+ENV NODE_ENV production
+
+EXPOSE 9000
+
+ENTRYPOINT /bin/bash -x ./entrypoint.sh

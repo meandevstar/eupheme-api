@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  eupheme-api:
+    container_name: eupheme-api
+    image: eupheme-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: on-failure
+    volumes:
+      - .:/src
+    ports:
+      - 9000:9000
+    networks:
+      - overlay
+
+networks:
+  overlay:
+    driver: bridge

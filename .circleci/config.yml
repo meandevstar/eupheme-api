@@ -1,0 +1,128 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@6.15.1
+  aws-ecs: circleci/aws-ecs@1.4.0
+  cloudformation: frameio/cloudformation@0.23.0
+
+commands:
+  install_dependencies:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Install packages
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
+
+  create_aws_profile:
+    steps:
+      - run:
+          name: Create .aws dir, credentials file and write profile data
+          command: |
+            mkdir -p ~/.aws && \
+            touch ~/.aws/credentials && \
+            echo "[default]" >> ~/.aws/credentials && \
+            echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials && \
+            echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials && \
+            cat ~/.aws/credentials
+
+  install_aws_cli:
+    steps:
+      - run:
+          name: Installing aws cli
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get -y install python3-pip python-dev build-essential awscli
+
+  # TODO: move to AWS secret manager
+  create_fb_account_cred:
+    steps:
+      - run:
+          name: Create firebase account cred
+          command: |
+            mkdir -p .creds && \
+            echo ${FB_ACCOUNT_CRED} >> .creds/eupheme-health.json
+
+  update_ecs_stack:
+    steps:
+      - run:
+          command: aws cloudformation create-stack --stack-name=nk-fargate-dev --template-body=file://.circleci/fargate.yml --capabilities CAPABILITY_NAMED_IAM
+          name: cloudformation - deploy
+
+  deploy_to_ecs_dev:
+    steps:
+      - aws-ecr/build-and-push-image:
+          setup-remote-docker: true
+          # remote-docker-layer-caching: true
+          # no_output_timeout: 30m
+          dockerfile: Dockerfile
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: '${AWS_RESOURCE_NAME_PREFIX}-api'
+          region: AWS_DEFAULT_REGION
+          tag: '${CIRCLE_SHA1}'
+      - aws-ecs/update-service:
+          family: 'APITaskDefinitiondev'
+          service-name: 'APIdev'
+          cluster-name: 'EuphemeAPIClusterDev'
+          container-image-name-updates: 'container=${ECS_CONTAINER_NAME},tag=${CIRCLE_SHA1}'
+          verify-revision-is-deployed: true
+      - run:
+          name: Test the deployment
+          command: |
+            export TARGET_GROUP_ARN=$(aws ecs describe-services --cluster EuphemeAPIClusterDev --services APIdev | jq -r '.services[0].loadBalancers[0].targetGroupArn')
+            export ELB_ARN=$(aws elbv2 describe-target-groups --target-group-arns $TARGET_GROUP_ARN | jq -r '.TargetGroups[0].LoadBalancerArns[0]')
+            export ELB_DNS_NAME=$(aws elbv2 describe-load-balancers --load-balancer-arns $ELB_ARN | jq -r '.LoadBalancers[0].DNSName')
+            echo "$ELB_DNS_NAME"
+            curl -s --insecure --retry 10 "http://${ELB_DNS_NAME}/v1/system/status" | grep "OK"
+
+jobs:
+  job-build_and_deploy_ecs_dev:
+    docker:
+      - image: 'circleci/python:3.7.1'
+    steps:
+      - checkout
+      - create_aws_profile
+      - install_aws_cli
+      - create_fb_account_cred
+      - deploy_to_ecs_dev
+    environment:
+      AWS_ACCOUNT_ID: 399151443846
+      AWS_ECR_ACCOUNT_URL: 399151443846.dkr.ecr.us-east-2.amazonaws.com
+      AWS_RESOURCE_NAME_PREFIX: eupheme
+      AWS_DEFAULT_REGION: us-east-2
+      ECS_CONTAINER_NAME: API
+
+  # job-build_and_deploy_ecs_prod:
+  #   docker:
+  #     - image: 'circleci/python:3.7.1'
+  #   steps:
+  #     - checkout
+  #     - create_aws_profile
+  #     - deploy_to_ecs_prod
+  #   environment:
+  #     AWS_ACCOUNT_ID: 399151443846
+  #     AWS_ECR_ACCOUNT_URL: 399151443846.dkr.ecr.us-east-1.amazonaws.com
+  #     AWS_RESOURCE_NAME_PREFIX: eupheme-prod
+  #     AWS_DEFAULT_REGION: us-east-1
+
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - job-build_and_deploy_ecs_dev:
+          filters:
+            branches:
+              only:
+                - develop
+      # - job-build_and_deploy_ecs_prod:
+      #     filters:
+      #       branches:
+      #         only: master
