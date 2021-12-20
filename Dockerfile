@@ -18,7 +18,6 @@ WORKDIR /app
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 COPY ./tsconfig.json ./tsconfig.json
-COPY .creds ./.creds
 COPY src ./src
 
 RUN yarn install --frozen-lockfile
