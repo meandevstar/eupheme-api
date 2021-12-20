@@ -42,15 +42,6 @@ commands:
             sudo apt-get -y -qq update
             sudo apt-get -y install python3-pip python-dev build-essential awscli
 
-  # TODO: move to AWS secret manager
-  create_fb_account_cred:
-    steps:
-      - run:
-          name: Create firebase account cred
-          command: |
-            mkdir -p .creds && \
-            echo ${FB_ACCOUNT_CRED} >> .creds/eupheme-health.json
-
   update_ecs_stack:
     steps:
       - run:
@@ -71,7 +62,7 @@ commands:
       - aws-ecs/update-service:
           family: 'APITaskDefinitiondev'
           service-name: 'APIdev'
-          cluster-name: 'EuphemeAPIClusterDev'
+          cluster-name: 'eupheme-dev'
           container-image-name-updates: 'container=${ECS_CONTAINER_NAME},tag=${CIRCLE_SHA1}'
           verify-revision-is-deployed: true
       - run:
@@ -94,11 +85,11 @@ jobs:
       - create_fb_account_cred
       - deploy_to_ecs_dev
     environment:
-      AWS_ACCOUNT_ID: 399151443846
-      AWS_ECR_ACCOUNT_URL: 399151443846.dkr.ecr.us-east-2.amazonaws.com
+      AWS_ACCOUNT_ID: 515858082033
+      AWS_ECR_ACCOUNT_URL: 515858082033.dkr.ecr.us-east-2.amazonaws.com
       AWS_RESOURCE_NAME_PREFIX: eupheme
       AWS_DEFAULT_REGION: us-east-2
-      ECS_CONTAINER_NAME: API
+      ECS_CONTAINER_NAME: dev-api-container
 
   # job-build_and_deploy_ecs_prod:
   #   docker:
