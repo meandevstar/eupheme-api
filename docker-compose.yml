@@ -6,7 +6,7 @@ services:
     image: eupheme-api:latest
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
 
     restart: on-failure
     volumes:

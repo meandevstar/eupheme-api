@@ -2,7 +2,7 @@
 
 # Entrypoint in Development
 
-AWS_SECRET_ID="arn:aws:secretsmanager:us-east-2:399151443846:secret:DOT_ENV-Na4otL"
+AWS_SECRET_ID="arn:aws:secretsmanager:us-east-2:515858082033:secret:DOT_ENV-S51i96"
 AWS_REGION="us-east-2"
 ENVFILE=".env"
 aws secretsmanager get-secret-value --secret-id $AWS_SECRET_ID --region $AWS_REGION | \
