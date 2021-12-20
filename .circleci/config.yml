@@ -82,7 +82,6 @@ jobs:
       - checkout
       - create_aws_profile
       - install_aws_cli
-      - create_fb_account_cred
       - deploy_to_ecs_dev
     environment:
       AWS_ACCOUNT_ID: 515858082033
