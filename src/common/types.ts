@@ -6,6 +6,7 @@ import {
   IUserDocument,
   IAuthTokenPayload,
   UserType,
+  ISessionModel,
 } from 'models/types';
 
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
@@ -90,6 +91,7 @@ export interface IDBConnectionMap {
 
 export interface IConnection extends Connection {
   User?: IUserModel;
+  Session?: ISessionModel;
 }
 
 export interface IBaseModel<T> extends Model<T> {

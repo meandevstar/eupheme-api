@@ -54,7 +54,8 @@ export default class SystemRoute implements IRoute {
             const avatarUrl = await uploadFile(
               buf,
               (files.file as formidable.File).mimetype,
-              uploadPath
+              uploadPath,
+              JSON.parse(fields.private as string || 'false'),
             );
             resolve(avatarUrl);
           });

@@ -24,6 +24,7 @@ export interface IUser {
   avatar?: string;
   dob?: Date;
   phone?: string;
+  idUrl?: string;
 }
 
 export interface IUserModel extends IBaseModel<IUserDocument> {}

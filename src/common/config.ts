@@ -17,7 +17,8 @@ const config: { [key: string]: any } = {
   awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
   awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   awsRegion: process.env.AWS_REGION,
-  s3Bucket: process.env.S3_BUCKET,
+  s3PublicBucket: process.env.S3_BUCKET,
+  s3PrivateBucket: process.env.S3_PRIVATE_BUCKET,
 };
 
 export default config;

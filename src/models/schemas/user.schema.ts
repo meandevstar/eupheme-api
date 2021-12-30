@@ -1,5 +1,4 @@
 // grab the mongoose module
-import { LeanDocument, Schema, Types } from 'mongoose';
 import { createHash } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
@@ -10,7 +9,7 @@ import {
   IUserModel,
   UserType,
 } from 'models/types';
-import { IAppContext, IBaseSchema } from 'common/types';
+import { IBaseSchema } from 'common/types';
 
 const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   username: {
@@ -45,6 +44,7 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   timezone: String,
   phone: String,
   dob: Date,
+  idUrl: String,
 });
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {

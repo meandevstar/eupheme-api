@@ -36,21 +36,26 @@ export async function getFolderInfo(folderName: string): Promise<AWS.S3.ObjectLi
   return allKeys;
 }
 
-export async function uploadFile(buf: Buffer | ReadStream, contentType: string, path: string): Promise<string> {
+export async function uploadFile(
+  buf: Buffer | ReadStream,
+  contentType: string,
+  path: string,
+  isPrivate?: boolean
+): Promise<string> {
   try {
     const s3 = getValidS3();
     const params = {
-      Bucket: config.s3Bucket,
+      Bucket: isPrivate ? config.s3PrivateBucket : config.s3PublicBucket,
       Key: path,
       Body: buf,
-      ACL: 'public-read',
+      ACL: !isPrivate ? 'public-read' : undefined,
       ContentType: contentType,
     };
 
     await s3.upload(params).promise();
-    const filename = path.match(/[^/]+$/g);
+    // const filename = path.match(/[^/]+$/g);
 
-    return filename && filename.length > 0 ? filename[0] : path;
+    return path;
   } catch (err) {
     throw err;
   }

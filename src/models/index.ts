@@ -5,18 +5,23 @@ import userSchema from './schemas/user.schema';
 import { ConnType, IConnection, IDBConnectionMap } from 'common/types';
 import {
   IUserDocument,
+  ISessionDocument,
 } from 'models/types';
+import sessionSchema from './schemas/session.schema';
 
 const connections: IDBConnectionMap = {};
 
 function registerModels(conn: IConnection) {
   conn.User = conn.model<IUserDocument>('User', userSchema, 'users');
+  conn.Session = conn.model<ISessionDocument>('Session', sessionSchema, 'sessions');
 
   // create collections if does not exists, to support multi-transaction
   conn.User.createCollection();
+  conn.Session.createCollection();
 
   // ensure indexes
   conn.User.ensureIndexes();
+  conn.Session.ensureIndexes();
 }
 
 export async function connect(singleConnMode?: boolean, uri?: string) {
