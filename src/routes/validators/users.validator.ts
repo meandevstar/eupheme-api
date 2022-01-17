@@ -4,7 +4,7 @@ import { emailSchema, mongooseIdSchema, paginationSchema, passwordSchema, timezo
 
 export const userRegisterSchema = {
   email: emailSchema.required(),
-  type: Joi.string().valid([UserType.User, UserType.Creator]).required(),
+  type: Joi.string().valid(UserType.User, UserType.Creator).required(),
   username: Joi.string().max(50, 'utf8').required(),
   name: Joi.string().max(255, 'utf8').required(),
   dob: Joi.date().iso().required(),
