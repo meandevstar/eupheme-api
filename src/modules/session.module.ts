@@ -3,7 +3,7 @@ import { createError } from "common/utils";
 import { ISessionCreatePayload } from "models/types";
 
 export async function createSession(context: IAppContext, payload: ISessionCreatePayload) {
-  const {
+  const { 
     conn: { Session, User },
     user,
   } = context;
@@ -22,10 +22,7 @@ export async function createSession(context: IAppContext, payload: ISessionCreat
     throw createError(StatusCode.BAD_REQUEST, 'Target type is wrong');
   }
 
-  const isScheduledSession = payload.start && payload.end;
-  if (isScheduledSession) {
-    // check session conflicts
-  }
+  
 
   // const session = await new Session({
   //   type: payload.type,

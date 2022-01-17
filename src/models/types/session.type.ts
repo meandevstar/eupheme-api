@@ -32,6 +32,6 @@ export interface ISessionDocument extends IBaseDocument<ISession>, ISession {}
 export interface ISessionCreatePayload {
   type: SessionType;
   target: string;
-  start?: string;
-  end?: string;
+  start: string;
+  end: string;
 }

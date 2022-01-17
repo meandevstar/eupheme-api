@@ -5,7 +5,7 @@ type WhiteListType = {
   [key: string]: string[];
 };
 const WHITE_LIST: WhiteListType = {
-  development: ['http://localhost:3000'],
+  development: ['http://localhost:3000', 'https://'],
   production: [],
 };
 

@@ -23,8 +23,15 @@ export interface IUser {
   password?: string;
   avatar?: string;
   dob?: Date;
+  bio?: string;
   phone?: string;
   idUrl?: string;
+  workingHours: IWorkingHour[];
+}
+
+export interface IWorkingHour {
+  start: number;
+  end: number;
 }
 
 export interface IUserModel extends IBaseModel<IUserDocument> {}
