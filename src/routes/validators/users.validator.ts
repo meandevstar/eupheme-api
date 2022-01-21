@@ -11,7 +11,6 @@ export const userRegisterSchema = {
   password: passwordSchema.required(),
   timezone: timezoneSchema.required(),
   phone: Joi.string(), 
-  idUrl: Joi.string().required(),
 };
 
 export const userLoginSchema = {

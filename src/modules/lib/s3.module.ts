@@ -53,9 +53,10 @@ export async function uploadFile(
     };
 
     await s3.upload(params).promise();
+    const fullPath = `${config.mediaHost}/${isPrivate ? 'private/' : ''}${path}`;
     // const filename = path.match(/[^/]+$/g);
 
-    return path;
+    return fullPath;
   } catch (err) {
     throw err;
   }

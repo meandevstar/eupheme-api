@@ -19,6 +19,8 @@ const config: { [key: string]: any } = {
   awsRegion: process.env.AWS_REGION,
   s3PublicBucket: process.env.S3_BUCKET,
   s3PrivateBucket: process.env.S3_PRIVATE_BUCKET,
+
+  mediaHost: process.env.MEDIA_HOST,
 };
 
 export default config;
