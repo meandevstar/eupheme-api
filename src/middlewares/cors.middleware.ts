@@ -18,6 +18,7 @@ export default (req: IRequest, res: Response, next: NextFunction) => {
   const origin = req.get('origin');
   const env = process.env.NODE_ENV as Environment;
 
+  console.log('==> whitelist check', origin, WHITE_LIST[env])
   if (WHITE_LIST[env].indexOf(origin) !== -1) {
     res.header('Access-Control-Allow-Origin', origin);
   }
