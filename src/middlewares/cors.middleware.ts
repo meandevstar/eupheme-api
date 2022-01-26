@@ -18,10 +18,11 @@ export default (req: IRequest, res: Response, next: NextFunction) => {
   const origin = req.get('origin');
   const env = process.env.NODE_ENV as Environment;
 
-  console.log('==> whitelist check', req.get('referrer'), origin, WHITE_LIST[env])
-  if (WHITE_LIST[env].indexOf(origin) !== -1) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  // if (WHITE_LIST[env].indexOf(origin) !== -1) {
+  //   res.header('Access-Control-Allow-Origin', origin);
+  // }
+  console.log(req.headers);
+  res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
