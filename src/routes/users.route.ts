@@ -37,9 +37,6 @@ export default class UserRoute implements IRoute {
             if (err) {
               return reject(err);
             }
-            if (!files.idFile) {
-              return reject(createError(StatusCode.BAD_REQUEST, 'idFile field is required'));
-            }
 
             // validate
             const cusReq = {
@@ -52,17 +49,19 @@ export default class UserRoute implements IRoute {
               )
             );
 
-            const uploadPath = `documents/file_${Date.now()}`;
-            const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
-            cusReq.context.payload.idUrl = await uploadFile(
-              buf,
-              (files.idFile as formidable.File).mimetype,
-              uploadPath,
-              true
-            );
+            if (files.idFile) {
+              const uploadPath = `documents/file_${Date.now()}`;
+              const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
+              cusReq.context.payload.idUrl = await uploadFile(
+                buf,
+                (files.idFile as formidable.File).mimetype,
+                uploadPath,
+                true
+              );
 
-            if (!cusReq.context.payload.idUrl) {
-              return reject(createError(StatusCode.INTERNAL_SERVER_ERROR, 'Something went wrong'));
+              if (!cusReq.context.payload.idUrl) {
+                return reject(createError(StatusCode.INTERNAL_SERVER_ERROR, 'Something went wrong'));
+              }
             }
 
             const res = await UserModule.registerUser(req.context, cusReq.context.payload);
