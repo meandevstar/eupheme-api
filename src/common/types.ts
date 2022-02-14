@@ -7,6 +7,9 @@ import {
   IAuthTokenPayload,
   UserType,
   ISessionModel,
+  IMessageModel,
+  INotificationModel,
+  IRoomModel,
 } from 'models/types';
 
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
@@ -92,6 +95,9 @@ export interface IDBConnectionMap {
 export interface IConnection extends Connection {
   User?: IUserModel;
   Session?: ISessionModel;
+  Room?: IRoomModel;
+  Message?: IMessageModel;
+  Notification?: INotificationModel;
 }
 
 export interface IBaseModel<T> extends Model<T> {
@@ -209,11 +215,13 @@ export enum ConnType {
   Default = 'Default',
   Background = 'Background',
   User = 'User',
+  Session = 'Session',
 }
 
 export enum RouterConfig {
   Default = ConnType.Default,
   Users = ConnType.User,
+  Session = ConnType.Session,
 }
 
 export enum ErrorModule {
@@ -230,4 +238,12 @@ export interface IRedisLockOptions {
 export enum RedisKey {
   UserPrefix = 'user',
   OnlineUsers = 'online_users',
+}
+
+export interface IEmailPayload {
+  subject: string;
+  body: string;
+  replyTo?: string;
+  recipients: string | string[];
+  text?: string;
 }

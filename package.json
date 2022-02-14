@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Uno-Mas/eupheme-api#readme",
   "dependencies": {
     "@joi/date": "^2.1.0",
+    "@sendgrid/mail": "^7.6.1",
     "@socket.io/redis-adapter": "^7.0.0",
     "@socket.io/redis-emitter": "^4.1.0",
     "@types/redlock": "^4.0.2",

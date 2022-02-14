@@ -1,4 +1,5 @@
-import { PopulatedDoc } from 'mongoose';
+import { LeanDocument, PopulatedDoc, Types } from 'mongoose';
+import { DateTime } from 'luxon';
 import { IBaseModel, IBaseDocument } from 'common/types';
 import { IUserDocument } from '.';
 
@@ -34,4 +35,12 @@ export interface ISessionCreatePayload {
   target: string;
   start: string;
   end: string;
+}
+
+export interface ISendSessionNotificationPayload {
+  type: 'create' | 'reschedule' | 'cancel';
+  target: LeanDocument<IUserDocument>;
+  startTime: DateTime;
+  endTime: DateTime;
+  sessionId: Types.ObjectId;
 }

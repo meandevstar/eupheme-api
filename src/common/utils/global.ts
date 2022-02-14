@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { Types } from 'mongoose';
+import { LeanDocument, Types } from 'mongoose';
 import joi from 'joi';
 import { default as FormData } from 'form-data';
+import { DateTime } from 'luxon';
 import { IJoi, IRequest, StatusCode } from 'common/types';
 import CustomError from 'common/errors/custom-error';
+import { ISessionDocument, IWorkingHour } from 'models/types';
 
 const MEETING_DURATION = {
   minutes: 30,
@@ -135,4 +137,179 @@ export function jsonToFormData(data: any): FormData {
   buildFormData(formData, data);
 
   return formData;
+}
+
+export function cleanSeconds(date: DateTime) {
+  return date.set({ second: 0, millisecond: 0 });
+}
+
+/**
+ * Get valid working hours in consideration of available hours of target user, along with time filter
+ *
+ * @param targetTimezone   Target user's timezone
+ * @param startTime  Start time of filter range
+ * @param endTime  End time of filter range
+ * @param availableHours   Target user's available working hours - user is considered available all day when it is empty
+ * @param sessions   sessions within start time and endtime range
+ *
+ */
+ export function checkWithinWorkingHours(
+  startTime: Date | DateTime,
+  endTime: Date | DateTime,
+  availableHours: IWorkingHour[],
+  sessions: LeanDocument<ISessionDocument>[] = []
+) {
+  const nowDateTime = DateTime.now();
+  const isFullyAvailable = !availableHours;
+  if (startTime >= endTime) {
+    throw createError(StatusCode.BAD_REQUEST, 'End time should be later than start time');
+  }
+  if (availableHours?.length === 0) {
+    return [];
+  }
+
+  // check meeting duration based on user subscription package
+  let startHour = startTime instanceof Date ? DateTime.fromJSDate(startTime) : startTime;
+  let endHour = (endTime instanceof Date ? DateTime.fromJSDate(endTime) : endTime).minus(
+    MEETING_DURATION
+  );
+  const sourceTimezone = startHour.zone;
+  if (startHour < nowDateTime) {
+    startHour = nowDateTime.setZone(sourceTimezone);
+  }
+
+  // minute modification
+  startHour = cleanSeconds(
+    startHour.set({
+      minute:
+        startHour.get('minute') % MEETING_DURATION.minutes > 0
+          ? Math.floor(startHour.get('minute') / MEETING_DURATION.minutes + 1) *
+            MEETING_DURATION.minutes
+          : startHour.get('minute'),
+    })
+  );
+  endHour = cleanSeconds(
+    endHour.set({
+      minute:
+        Math.floor(endHour.get('minute') / MEETING_DURATION.minutes) * MEETING_DURATION.minutes,
+    })
+  );
+
+  let ahIndex = 0;
+  let resultPerDay = [];
+  const result = [];
+
+  // clone op
+  let op = DateTime.fromMillis(startHour.toMillis()).setZone(sourceTimezone);
+  const ahDateTimes: { start?: DateTime; end?: DateTime } = {};
+
+  if (!isFullyAvailable) {
+    ahDateTimes.start = DateTime.fromJSDate(availableHours[ahIndex].start);
+    ahDateTimes.end = DateTime.fromJSDate(availableHours[ahIndex].end);
+
+    op = cleanSeconds(
+      op.set({
+        year: ahDateTimes.start.year,
+        month: ahDateTimes.start.month,
+        day: ahDateTimes.start.day,
+        hour: ahDateTimes.start.hour,
+        minute: 0,
+      })
+    );
+  }
+
+  do {
+    let isAvailableHoursFree = false;
+    const meetingDateTimes = {
+      start: op,
+      end: op.plus(MEETING_DURATION),
+    };
+
+    if (isFullyAvailable) {
+      isAvailableHoursFree = true;
+    } else if (
+      ahDateTimes.start <= op &&
+      op <= ahDateTimes.end &&
+      !ahDateTimes.start.equals(ahDateTimes.end)
+    ) {
+      // just skip check if it is already true
+      isAvailableHoursFree =
+        ahDateTimes.start <= meetingDateTimes.start && meetingDateTimes.end <= ahDateTimes.end;
+    }
+
+    // check conflicts with sessions
+    const isSessionFree = sessions.every((session) => {
+      // convert appointment time into requester's timezone, to sync date frame
+      const sessionStart = DateTime.fromJSDate(session.start as Date).setZone(sourceTimezone);
+      const sessionEnd = DateTime.fromJSDate(session.end as Date).setZone(sourceTimezone);
+
+      // skip appointments in other day
+      if (!sessionStart.hasSame(meetingDateTimes.start, 'day')) {
+        return true;
+      }
+
+      return sessionStart >= meetingDateTimes.end || sessionEnd <= meetingDateTimes.start;
+    });
+
+    if (isAvailableHoursFree && isSessionFree) {
+      resultPerDay.push({
+        start: meetingDateTimes.start.toISO({ includeOffset: true }),
+        end: meetingDateTimes.end.toISO({ includeOffset: true }),
+      });
+    }
+
+    const nextOp = op.plus(MEETING_DURATION);
+    if (!nextOp.hasSame(op, 'day')) {
+      // push to results for this day
+      if (resultPerDay.length > 0) {
+        result.push({
+          date: op.setZone(sourceTimezone).toISO({ includeOffset: true }),
+          hours: resultPerDay,
+        });
+
+        resultPerDay = [];
+      }
+
+      // use next day if available hour check is skipped
+      if (!isFullyAvailable) {
+        do {
+          ahIndex += 1;
+          if (!availableHours[ahIndex]) {
+            break;
+          }
+
+          ahDateTimes.start = cleanSeconds(DateTime.fromJSDate(availableHours[ahIndex].start));
+          ahDateTimes.end = cleanSeconds(DateTime.fromJSDate(availableHours[ahIndex].end));
+        } while (ahDateTimes.end < nowDateTime);
+
+        if (availableHours[ahIndex]) {
+          op = cleanSeconds(
+            op.set({
+              year: ahDateTimes.start.year,
+              month: ahDateTimes.start.month,
+              day: ahDateTimes.start.day,
+              hour: ahDateTimes.start.hour,
+              minute: 0,
+            })
+          );
+
+          continue;
+        } else {
+          break;
+        }
+      }
+    }
+
+    op = nextOp;
+  } while (op <= endHour);
+
+  // last day consideration
+  if (resultPerDay.length > 0) {
+    result.push({
+      date: op.setZone(sourceTimezone).toISO({ includeOffset: true }),
+      hours: resultPerDay,
+    });
+  }
+
+  return result;
 }

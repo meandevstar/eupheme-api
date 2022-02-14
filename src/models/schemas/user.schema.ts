@@ -3,12 +3,7 @@ import { createHash } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
 import Config from 'common/config';
-import {
-  UserStatus,
-  IUserDocument,
-  IUserModel,
-  UserType,
-} from 'models/types';
+import { UserStatus, IUserDocument, IUserModel, UserType, NotificationType } from 'models/types';
 import { IBaseSchema } from 'common/types';
 
 const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
@@ -45,20 +40,27 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   phone: String,
   dob: Date,
   idUrl: String,
+  notifications: {
+    email: {
+      [NotificationType.IncomingSession]: {
+        type: Boolean,
+        default: true,
+      },
+      [NotificationType.NewSession]: {
+        type: Boolean,
+        default: true,
+      },
+      [NotificationType.NewMessage]: {
+        type: Boolean,
+        default: true,
+      },
+    },
+  },
 });
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {
   const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
-  const allowedFields = [
-    'id',
-    'email',
-    'name',
-    'avatar',
-    'timezone',
-    'phone',
-    'type',
-    'status',
-  ];
+  const allowedFields = ['id', 'email', 'name', 'avatar', 'timezone', 'phone', 'type', 'status'];
 
   if (!grant || grant === UserType.Admin) {
     allowedFields.push('dob', 'name', 'phone');

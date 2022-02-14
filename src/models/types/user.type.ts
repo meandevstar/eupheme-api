@@ -1,4 +1,5 @@
 import { IBaseModel, IBaseDocument } from 'common/types';
+import { INotificationSettings } from './notification.type';
 
 export enum UserType {
   Admin = 'ADMIN',
@@ -27,11 +28,12 @@ export interface IUser {
   phone?: string;
   idUrl?: string;
   workingHours: IWorkingHour[];
+  notifications?: INotificationSettings;
 }
 
 export interface IWorkingHour {
-  start: number;
-  end: number;
+  start: Date;
+  end: Date;
 }
 
 export interface IUserModel extends IBaseModel<IUserDocument> {}
