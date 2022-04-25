@@ -1,6 +1,6 @@
 # Dockerfile used for production
 
-FROM node:16.9.1-alpine
+FROM node:16.13.0-alpine3.11
 
 RUN apk --update add bash && \
     apk add --no-cache dos2unix python3 py3-pip jq git make file nginx && \
