@@ -57,10 +57,12 @@ export async function registerUser(context: IAppContext, payload: IRegisterUserP
 
   const user = await new User({
     ...payload,
-    email: {
-      [NotificationType.IncomingSession]: true,
-      [NotificationType.NewSession]: true,
-      [NotificationType.NewMessage]: true,
+    notifications: {
+      email: {
+        [NotificationType.IncomingSession]: true,
+        [NotificationType.NewSession]: true,
+        [NotificationType.NewMessage]: true,
+      },
     },
     loggedCount: 1,
   }).save();

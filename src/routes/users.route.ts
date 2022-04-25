@@ -64,9 +64,12 @@ export default class UserRoute implements IRoute {
               }
             }
 
-            const res = await UserModule.registerUser(req.context, cusReq.context.payload);
-
-            resolve(res);
+            try {
+              const res = await UserModule.registerUser(req.context, cusReq.context.payload);
+              resolve(res);
+            } catch (error) {
+              reject(error);
+            }
           });
         });
 
