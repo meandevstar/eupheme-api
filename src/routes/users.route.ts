@@ -22,7 +22,7 @@ export default class UserRoute implements IRoute {
 
   constructor(path: string) {
     this.path = path;
-    const { router, exRouter } = getBaseRoute(RouterConfig.Users);
+    const { router, exRouter } = getBaseRoute(RouterConfig.User);
     this.router = router;
     this.exRouter = exRouter;
     this.initializeRoutes();

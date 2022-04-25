@@ -6,6 +6,7 @@ import isAuthenticated from 'middlewares/auth.middleware';
 import * as SessionsModule from 'modules/sessions.module';
 import {
   createSessionSchema,
+  getBookedSlotsSchema,
   getSessionsSchema,
   updateSessionSchema,
 } from './validators/sessions.validator';
@@ -82,6 +83,16 @@ export default class SessionRoute implements IRoute {
           },
           sort,
         });
+        return result;
+      })
+    );
+
+    this.router.get(
+      '/booked-slots',
+      isAuthenticated,
+      validate(getBookedSlotsSchema),
+      createController(async (req: IRequest) => {
+        const result = await SessionsModule.getBookedSlots(req.context, req.context.payload);
         return result;
       })
     );

@@ -216,12 +216,14 @@ export enum ConnType {
   Background = 'Background',
   User = 'User',
   Session = 'Session',
+  Chats = 'Chats',
 }
 
 export enum RouterConfig {
   Default = ConnType.Default,
-  Users = ConnType.User,
+  User = ConnType.User,
   Session = ConnType.Session,
+  Chats = ConnType.Chats,
 }
 
 export enum ErrorModule {

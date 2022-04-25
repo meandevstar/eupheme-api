@@ -1,7 +1,13 @@
 import pick from 'lodash/pick';
 
 import { IAppContext, IQueryPayload, StatusCode } from 'common/types';
-import { IRegisterUserPayload, IUser, ILoginPayload, UserType } from 'models/types';
+import {
+  IRegisterUserPayload,
+  IUser,
+  ILoginPayload,
+  UserType,
+  NotificationType,
+} from 'models/types';
 import { getAuthTokens } from './auth.module';
 import * as s3 from './lib/s3.module';
 import { createError } from 'common/utils';
@@ -51,6 +57,11 @@ export async function registerUser(context: IAppContext, payload: IRegisterUserP
 
   const user = await new User({
     ...payload,
+    email: {
+      [NotificationType.IncomingSession]: true,
+      [NotificationType.NewSession]: true,
+      [NotificationType.NewMessage]: true,
+    },
     loggedCount: 1,
   }).save();
 
@@ -64,7 +75,7 @@ export async function updateProfile(context: IAppContext, payload: Partial<IUser
   } = context;
 
   // remove old avatar
-  if (user.avatar && payload.avatar !== user.avatar && user.avatar.includes('serente.com')) {
+  if (user.avatar && payload.avatar !== user.avatar && user.avatar.includes('eavii.com')) {
     await s3.deleteFile(user.avatar);
   }
 
@@ -89,10 +100,7 @@ export async function getUsers(context: IAppContext, payload: IQueryPayload) {
   if (query.search) {
     try {
       const rgx = new RegExp(query.search, 'i');
-      userQuery.$or = [
-        { username: rgx },
-        { email: rgx },
-      ];
+      userQuery.$or = [{ username: rgx }, { email: rgx }];
     } catch (error) {
       throw createError(StatusCode.BAD_REQUEST, 'Invalid search string');
     }

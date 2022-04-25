@@ -54,7 +54,6 @@ export async function uploadFile(
 
     await s3.upload(params).promise();
     const fullPath = `${config.mediaHost}/${isPrivate ? 'private/' : ''}${path}`;
-    // const filename = path.match(/[^/]+$/g);
 
     return fullPath;
   } catch (err) {
@@ -71,6 +70,7 @@ export function deleteFile(path: string): Promise<boolean> {
         Key: path,
       };
       s3.deleteObject(params, (err, data) => {
+        console.log('==> delete file', data);
         if (err) {
           reject(err);
         } else {

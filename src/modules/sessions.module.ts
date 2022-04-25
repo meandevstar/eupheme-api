@@ -1,3 +1,4 @@
+import Mongoose from 'mongoose';
 import { DateTime } from 'luxon';
 import omitBy from 'lodash/omitBy';
 import isNil from 'lodash/isNil';
@@ -13,7 +14,6 @@ import {
   ISessionCreatePayload,
   NotificationType,
   SessionStatus,
-  UserType,
 } from 'models/types';
 import config from 'common/config';
 import { sendEmail } from './lib/email.module';
@@ -33,7 +33,7 @@ export async function createSession(context: IAppContext, payload: ISessionCreat
   }
 
   const target = await User.findById(payload.target)
-    .select('username email status type timezone email')
+    .select('username email status type timezone email notifications')
     .lean({ virtuals: true });
   if (!target) {
     throw createError(StatusCode.BAD_REQUEST, 'Target does not exists');
@@ -56,7 +56,7 @@ export async function createSession(context: IAppContext, payload: ISessionCreat
         status: {
           $ne: SessionStatus.Canceled,
         },
-        $or: [{ user: target.id }, { target: target.id }],
+        participants: target.id
       },
       select: {
         _id: 1,
@@ -66,13 +66,13 @@ export async function createSession(context: IAppContext, payload: ISessionCreat
   );
 
   // check available hours
-  const workingHours = checkWithinWorkingHours(
-    lStartTime,
-    lEndTime,
-    // TODO: update if admin has availability setting
-    target.type === UserType.Creator ? target.workingHours : null
-  );
-  if (totalSessions > 0 || workingHours.length === 0) {
+  // const workingHours = checkWithinWorkingHours(
+  //   lStartTime,
+  //   lEndTime,
+  //   // TODO: update if admin has availability setting
+  //   target.type === UserType.Creator ? target.workingHours : null
+  // );
+  if (totalSessions > 0/* || workingHours.length === 0*/) {
     throw createError(StatusCode.BAD_REQUEST, 'Creator does not have available time slots');
   }
 
@@ -104,7 +104,7 @@ export async function createSession(context: IAppContext, payload: ISessionCreat
     sessionId: session.id,
   });
 
-  return omit(session.beautify(), ['id']);
+  return session.beautify();
 }
 
 export async function getSessions(
@@ -184,7 +184,7 @@ export async function getUpcomingSessions(context: IAppContext, payload: IQueryP
   newPayload.query = {
     ...payload.query,
     status: SessionStatus.Pending,
-    startTime: new Date(),
+    endTime: new Date(),
     $or: [{ user: sessionUser.id }, { provider: sessionUser.id }],
   };
 
@@ -197,9 +197,36 @@ export async function getUpcomingSessions(context: IAppContext, payload: IQueryP
   newPayload.populate = [
     {
       path: 'participants',
-      select: 'username avatar',
+      select: 'username avatar type timezone',
     },
   ];
+
+  const { total, data } = await getSessions(context, newPayload, true);
+  return {
+    total,
+    data,
+  };
+}
+
+export async function getBookedSlots(context: IAppContext, payload: {
+  target: string,
+  start: Date,
+  end: Date,
+}) {
+  const newPayload: any = {
+    query: {
+      status: {
+        $ne: SessionStatus.Canceled
+      },
+      startTime: payload.start,
+      endTime: payload.end,
+      participants: new Mongoose.Types.ObjectId(payload.target),
+    },
+    select: {
+      startTime: 1,
+      endTime: 1,
+    }
+  };
 
   const { total, data } = await getSessions(context, newPayload, true);
   return {
@@ -234,7 +261,7 @@ export async function updateSession(
   await session.save();
 
   // send notification
-  if (payload.start && payload.end) {
+  if (payload.startTime && payload.endTime) {
     const populatedSession = await session.populate({
       path: 'participants',
       select: 'username email notifications',
@@ -247,8 +274,8 @@ export async function updateSession(
     sendSessionNotification(context, {
       type: 'reschedule',
       target,
-      startTime: DateTime.fromJSDate(session.start as Date),
-      endTime: DateTime.fromJSDate(session.end as Date),
+      startTime: DateTime.fromJSDate(session.startTime as Date),
+      endTime: DateTime.fromJSDate(session.endTime as Date),
       sessionId: session._id,
     });
   }
@@ -277,7 +304,7 @@ export async function cancelSession(context: IAppContext, sessionId: string) {
   if (!isValid) {
     throw createError(StatusCode.BAD_REQUEST, 'Session does not exists');
   }
-  if (DateTime.fromJSDate(session.start as Date).diff(DateTime.now(), 'minutes').minutes < 1) {
+  if (DateTime.fromJSDate(session.startTime as Date).diff(DateTime.now(), 'minutes').minutes < 1) {
     throw createError(StatusCode.BAD_REQUEST, 'You cannot cancel 1 minutes before the meeting');
   }
 
@@ -291,8 +318,8 @@ export async function cancelSession(context: IAppContext, sessionId: string) {
   sendSessionNotification(context, {
     type: 'cancel',
     target,
-    startTime: DateTime.fromJSDate(session.start as Date),
-    endTime: DateTime.fromJSDate(session.end as Date),
+    startTime: DateTime.fromJSDate(session.startTime as Date),
+    endTime: DateTime.fromJSDate(session.endTime as Date),
     sessionId: session._id,
   });
 }
@@ -378,29 +405,29 @@ function sendSessionNotification(
     recipients: user.email,
     subject:
       type === 'create'
-        ? `Appointment confirmation with ${targetName}`
+        ? `Meeting confirmation with ${targetName}`
         : type === 'reschedule'
-        ? `Appointment with ${targetName} has been rescheduled`
-        : `Appointment with ${targetName} has been cancelled`,
+        ? `Meeting with ${targetName} has been rescheduled`
+        : `Meeting with ${targetName} has been cancelled`,
   });
   sendEmail({
     body: emailBody,
     recipients: target.email,
     subject:
       type === 'create'
-        ? `Appointment confirmation with ${userName}`
+        ? `Meeting confirmation with ${userName}`
         : type === 'reschedule'
-        ? `Appointment with ${userName} has been rescheduled`
-        : `Appointment with ${userName} has been cancelled`,
+        ? `Meeting with ${userName} has been rescheduled`
+        : `Meeting with ${userName} has been cancelled`,
   });
 
   const notificationPayload: ISendNotificationPayload = {
     content:
       type === 'create'
-        ? `Appointment confirmation with ${targetName}`
+        ? `Meeting confirmation with ${targetName}`
         : type === 'reschedule'
-        ? `Appointment with ${targetName} has been rescheduled`
-        : `Appointment with ${targetName} has been cancelled`,
+        ? `Meeting with ${targetName} has been rescheduled`
+        : `Meeting with ${targetName} has been cancelled`,
     user: target.id,
     type: NotificationType.NewSession,
     meta: {

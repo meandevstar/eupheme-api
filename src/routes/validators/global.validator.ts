@@ -6,7 +6,7 @@ export const paginationSchema = {
     then: Joi.exist(),
   }),
   limit: Joi.number().integer().min(1),
-  sort: Joi.object().pattern(/./, Joi.number().valid(-1, 1)),
+  sort: Joi.string(),
 };
 
 export const emailSchema = Joi.string().email().max(255, 'utf8');

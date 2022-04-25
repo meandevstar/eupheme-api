@@ -240,8 +240,8 @@ export function cleanSeconds(date: DateTime) {
     // check conflicts with sessions
     const isSessionFree = sessions.every((session) => {
       // convert appointment time into requester's timezone, to sync date frame
-      const sessionStart = DateTime.fromJSDate(session.start as Date).setZone(sourceTimezone);
-      const sessionEnd = DateTime.fromJSDate(session.end as Date).setZone(sourceTimezone);
+      const sessionStart = DateTime.fromJSDate(session.startTime as Date).setZone(sourceTimezone);
+      const sessionEnd = DateTime.fromJSDate(session.endTime as Date).setZone(sourceTimezone);
 
       // skip appointments in other day
       if (!sessionStart.hasSame(meetingDateTimes.start, 'day')) {

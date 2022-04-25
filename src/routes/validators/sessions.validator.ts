@@ -19,3 +19,9 @@ export const getSessionsSchema = {
   end: Joi.date().iso().min(Joi.ref('start')),
   target: Joi.string(),
 };
+
+export const getBookedSlotsSchema = {
+  start: Joi.date().iso().required(),
+  end: Joi.date().iso().min(Joi.ref('start')).required(),
+  target: Joi.string().required()
+}

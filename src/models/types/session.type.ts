@@ -10,7 +10,7 @@ export enum SessionType {
 
 export enum SessionStatus {
   Pending = 'PENDING',
-  Confirmed = 'Confirmed',
+  Confirmed = 'CONFIRMED',
   InProgress = 'IN_PROGRESS',
   Completed = 'COMPLETED',
   Canceled = 'CANCELED',
@@ -22,8 +22,8 @@ export interface ISession {
   status?: SessionStatus;
   participants: PopulatedDoc<IUserDocument>[];
   otId?: string;
-  start: Date | string;
-  end: Date | string;
+  startTime: Date | string;
+  endTime: Date | string;
 }
 
 export interface ISessionModel extends IBaseModel<ISessionDocument> {}

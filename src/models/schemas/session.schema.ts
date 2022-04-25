@@ -23,8 +23,8 @@ const sessionSchema = new IBaseSchema<ISessionDocument, ISessionModel>({
     ref: 'User',
   }],
   otId: String,
-  start: Date,
-  end: Date,
+  startTime: Date,
+  endTime: Date,
 });
 
 sessionSchema.index({ participants: 1, type: 1, status: 1 });

@@ -9,10 +9,11 @@ import { pubClient, subClient } from './redis.module';
 import config from 'common/config';
 import { createError } from 'common/utils';
 import { IAppContext, RedisKey, StatusCode } from 'common/types';
-import { IAuthTokenPayload, UserType } from 'models/types';
+import { IAuthTokenPayload, SessionStatus, UserType } from 'models/types';
 import { verifyToken } from 'modules/auth.module';
 import * as redis from './redis.module';
 import logger from './logger.module';
+import { updateSession } from 'modules/sessions.module';
 
 let server: http.Server;
 let io: Server;
@@ -64,8 +65,8 @@ export function initialize(ctx: IAppContext) {
     // store in cache
     sockets.push(socket);
 
+    registerGlobalEvents();
     registerUserEvents(socket);
-    registerGlobalEvents(socket);
     registerSocketEvents(socket);
   });
 }
@@ -82,30 +83,83 @@ async function registerUserEvents(socket: Socket) {
     .select('firstName lastName email type avatar')
     .lean({ virtuals: true });
 
-  // this is only used in admin/doctor panel
-  if (socket.data.type !== UserType.User) {
-    socket.emit(
-      'online_users',
-      onlineUsers.map((v) => omit(v, ['_id']))
-    );
-  }
-
-  // notify online status
-  socket.broadcast.emit('user_status', {
-    id: socket.data.id,
-    connected: true,
-  });
+  // Only dispatch user => creator and creator => user relation (except admin)
+  const onlineUsersPayload = onlineUsers.map((v) => omit(v, ['_id']));
+  Object.values(UserType)
+    .filter((type) => type !== socket.data.id || type === UserType.Admin)
+    .map((type) => {
+      io.of('/').to(getUserTypeRoomName(type)).emit('online_users', onlineUsersPayload);
+    });
 
   // join account room
   socket.join(getAccountRoomName(socket.data.id));
+  // join to default global room specific per user type
+  socket.join(getUserTypeRoomName(socket.data.type));
 }
 
-function registerGlobalEvents(socket: Socket) {
+function registerGlobalEvents() {
   // global pubsub handler
-  redis.subscribe('gn', ({ type, data }: { type: string; data: any }) => {});
+  redis.subscribe('gn', ({ type, data }: { type: string; data: any }) => {
+    if (type === 'room') {
+      roomHandler(data.action, data.room, data.users, true);
+    }
+  });
 }
 
 function registerSocketEvents(socket: Socket) {
+  // chat typing event
+  socket.on('chat_typing', ({ room, typing }: { room: string; typing: boolean }) => {
+    if (!room) {
+      return;
+    }
+
+    io.of('/').in(getChatRoomName(room)).emit('chat_typing', {
+      user: socket.data.id,
+      typing,
+    });
+  });
+
+  // user leave chat room event
+  socket.on('leave_room', ({ rooms }: { rooms: string[] }) => {
+    if (!rooms || !rooms.length) {
+      return;
+    }
+
+    rooms.forEach((room) => {
+      if (!room) {
+        return;
+      }
+
+      const roomName = getChatRoomName(room);
+      
+      if (socket.rooms.has(roomName)) {
+        socket.leave(getChatRoomName(room));
+      }
+    });
+  });
+
+  // user call status notification
+  socket.on(
+    'call_status',
+    async (payload: { session: string; user: string; status: 'accepted' | 'rejected' }) => {
+      if (!payload.session || !payload.user || !payload.status) {
+        return;
+      }
+
+      if (payload.status === 'accepted') {
+        // update session call time
+        const newContext = {
+          user: socket.data,
+          ...context
+        } as unknown as IAppContext;
+        updateSession(newContext, payload.session, { status: SessionStatus.InProgress });
+      }
+
+      // send event
+      io.of('/').in(getAccountRoomName(payload.user)).emit('call_status', payload);
+    }
+  );
+
   // disconnect handler
   socket.on('disconnect', async () => {
     const matchingSockets = await io.in(getAccountRoomName(socket.data.id)).allSockets();
@@ -123,12 +177,41 @@ function registerSocketEvents(socket: Socket) {
   });
 }
 
+export function roomHandler(
+  action: 'join' | 'leave',
+  room: string,
+  users: string[],
+  published?: boolean
+) {
+  if (!published) {
+    redis.publish('gn', {
+      type: 'room',
+      data: {
+        action,
+        room,
+        users,
+      },
+    });
+    return;
+  }
+
+  sockets.forEach((socket) => {
+    if (users.includes(socket.data.id)) {
+      socket[action](room);
+    }
+  });
+}
+
 export function getAccountRoomName(userId: string | Mongoose.Types.ObjectId) {
   return `u_${userId.toString()}`;
 }
 
 export function getChatRoomName(roomId: string | Mongoose.Types.ObjectId) {
   return `room_${roomId.toString()}`;
+}
+
+export function getUserTypeRoomName(type: UserType) {
+  return `user_type_${type}`;
 }
 
 export async function isUserOnline(userId: string | Mongoose.Types.ObjectId) {
