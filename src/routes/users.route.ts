@@ -44,10 +44,10 @@ export default class UserRoute implements IRoute {
                 body: fields,
                 context: {},
               } as any;
-              await new Promise(_resolve =>
+              await new Promise((_resolve, _reject) =>
                 validate(userRegisterSchema)(cusReq, null, (error) => {
                   if (error) {
-                    reject(error)
+                    _reject(error)
                   } else {
                     _resolve(null)
                   }
