@@ -13,10 +13,19 @@ export enum UserStatus {
   Pending = 'PENDING',
 }
 
+export enum Pronoun {
+  He = 'HE',
+  She = 'SHE',
+  They = 'THEY',
+  Other = 'OTHER',
+}
+
 export interface IUser {
   email: string;
   username: string;
-  name?: string;
+  name?: string;  // Legal Name
+  displayName?: string;
+  pronoun?: Pronoun;
   timezone: string;
   type?: UserType;
   status?: UserStatus;

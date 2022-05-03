@@ -47,26 +47,35 @@ export default class UserRoute implements IRoute {
               await new Promise((_resolve, _reject) =>
                 validate(userRegisterSchema)(cusReq, null, (error) => {
                   if (error) {
-                    _reject(error)
+                    _reject(error);
                   } else {
-                    _resolve(null)
+                    _resolve(null);
                   }
                 })
               );
 
-              if (files.idFile) {
-                const uploadPath = `documents/file_${Date.now()}`;
-                const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
-                cusReq.context.payload.idUrl = await uploadFile(
-                  buf,
-                  (files.idFile as formidable.File).mimetype,
-                  uploadPath,
-                  true
-                );
+              if (cusReq.context.payload.type === UserType.Creator) {
+                if (files.idFile) {
+                  const uploadPath = `documents/file_${Date.now()}`;
+                  const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
+                  cusReq.context.payload.idUrl = await uploadFile(
+                    buf,
+                    (files.idFile as formidable.File).mimetype,
+                    uploadPath,
+                    true
+                  );
 
-                if (!cusReq.context.payload.idUrl) {
-                  throw createError(StatusCode.INTERNAL_SERVER_ERROR, 'Something went wrong');
+                  if (!cusReq.context.payload.idUrl) {
+                    throw createError(
+                      StatusCode.INTERNAL_SERVER_ERROR,
+                      'Something went wrong, please try again later'
+                    );
+                  }
+                } else {
+                  throw createError(StatusCode.BAD_REQUEST, 'ID File is required');
                 }
+              } else if (files.idFile) {
+                throw createError(StatusCode.BAD_REQUEST, 'ID file is not valid payload');
               }
 
               const res = await UserModule.registerUser(req.context, cusReq.context.payload);

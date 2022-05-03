@@ -3,15 +3,22 @@ import { createHash } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
 import Config from 'common/config';
-import { UserStatus, IUserDocument, IUserModel, UserType, NotificationType } from 'models/types';
+import { UserStatus, IUserDocument, IUserModel, UserType, NotificationType, Pronoun } from 'models/types';
 import { IBaseSchema } from 'common/types';
+
+const slugify = require('mongoose-slug-generator');
 
 const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   username: {
     type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
+    slug: 'name',
+    unique_slug: true,
+    permanent: true,
+  },
+  pronoun: {
+    type: String,
+    enum: Object.values(Pronoun),
+    default: Pronoun.He,
   },
   email: {
     type: String,
@@ -25,6 +32,7 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
     default: UserType.User,
   },
   name: String,
+  displayName: String,
   password: String,
   avatar: String,
   status: {
@@ -57,6 +65,8 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
     },
   },
 });
+
+userSchema.plugin(slugify);
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {
   const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
