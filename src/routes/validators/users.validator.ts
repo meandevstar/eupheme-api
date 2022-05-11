@@ -1,12 +1,18 @@
 import { Joi } from 'common/utils';
-import { Pronoun, UserStatus, UserType } from 'models/types';
-import { emailSchema, mongooseIdSchema, paginationSchema, passwordSchema, timezoneSchema } from './global.validator';
+import { UserStatus, UserType } from 'models/types';
+import {
+  emailSchema,
+  mongooseIdSchema,
+  paginationSchema,
+  passwordSchema,
+  timezoneSchema,
+} from './global.validator';
 
 export const userRegisterSchema = {
   email: emailSchema.required(),
   type: Joi.string().valid(UserType.User, UserType.Creator).required(),
   name: Joi.string().max(255, 'utf8').required(),
-  pronoun: Joi.string().valid(...Object.values(Pronoun)).required(),
+  pronoun: Joi.string(),
   displayName: Joi.string().max(255, 'utf8').when('type', {
     is: UserType.Creator,
     then: Joi.required(),
@@ -40,4 +46,5 @@ export const getUsersSchema = {
   search: Joi.string().max(50, 'utf8'),
   type: Joi.string().valid(...Object.values(UserType)),
   status: Joi.string().valid(...Object.values(UserStatus)),
-}
+  pronoun: Joi.array().items(Joi.string()),
+};

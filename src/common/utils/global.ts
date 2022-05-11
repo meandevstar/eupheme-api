@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { LeanDocument, Types } from 'mongoose';
+import formidable from 'formidable';
 import joi from 'joi';
 import { default as FormData } from 'form-data';
 import { DateTime } from 'luxon';
@@ -153,7 +154,7 @@ export function cleanSeconds(date: DateTime) {
  * @param sessions   sessions within start time and endtime range
  *
  */
- export function checkWithinWorkingHours(
+export function checkWithinWorkingHours(
   startTime: Date | DateTime,
   endTime: Date | DateTime,
   availableHours: IWorkingHour[],
@@ -312,4 +313,20 @@ export function cleanSeconds(date: DateTime) {
   }
 
   return result;
+}
+
+export function formidablePromise(
+  req: IRequest,
+  opts: any = {}
+): Promise<{ fields: { [key in string]: any }; files: formidable.Files }> {
+  return new Promise(function (resolve, reject) {
+    var form = new formidable.IncomingForm(opts);
+    form.parse(req, function (err, fields, files) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve({ fields: fields, files: files });
+    });
+  });
 }

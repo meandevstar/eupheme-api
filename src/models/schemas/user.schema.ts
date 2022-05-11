@@ -3,7 +3,15 @@ import { createHash } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
 import Config from 'common/config';
-import { UserStatus, IUserDocument, IUserModel, UserType, NotificationType, Pronoun } from 'models/types';
+import {
+  UserStatus,
+  IUserDocument,
+  IUserModel,
+  UserType,
+  NotificationType,
+  Pronoun,
+  Gender,
+} from 'models/types';
 import { IBaseSchema } from 'common/types';
 
 const slugify = require('mongoose-slug-generator');
@@ -15,10 +23,10 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
     unique_slug: true,
     permanent: true,
   },
-  pronoun: {
+  gender: {
     type: String,
-    enum: Object.values(Pronoun),
-    default: Pronoun.He,
+    enum: Object.values(Gender),
+    default: Gender.Male,
   },
   email: {
     type: String,
@@ -33,6 +41,8 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   },
   name: String,
   displayName: String,
+  title: String,
+  pronoun: String,
   password: String,
   avatar: String,
   status: {
@@ -70,10 +80,23 @@ userSchema.plugin(slugify);
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {
   const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
-  const allowedFields = ['id', 'email', 'name', 'avatar', 'timezone', 'phone', 'type', 'status'];
+  const allowedFields = [
+    'id',
+    'email',
+    'name',
+    'displayName',
+    'title',
+    'avatar',
+    'timezone',
+    'phone',
+    'type',
+    'status',
+    'pronoun',
+    'gender',
+  ];
 
   if (!grant || grant === UserType.Admin) {
-    allowedFields.push('dob', 'name', 'phone');
+    allowedFields.push('dob', 'phone');
   }
   return pick(payload, allowedFields);
 };

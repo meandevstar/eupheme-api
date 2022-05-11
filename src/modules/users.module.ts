@@ -108,6 +108,18 @@ export async function getUsers(context: IAppContext, payload: IQueryPayload) {
     }
   }
 
+  if (query.pronoun) {
+    let pronouns: string[];
+    if (typeof query.pronoun === 'string') {
+      pronouns = [query.pronoun];
+    } else {
+      pronouns = query.pronoun;
+    }
+    userQuery.pronoun = {
+      $in: pronouns,
+    };
+  }
+
   const countAction = User.find(userQuery).countDocuments();
   let queryAction = User.find(userQuery);
   if (sort) {

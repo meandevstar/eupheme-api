@@ -10,6 +10,7 @@ import {
   IMessageModel,
   INotificationModel,
   IRoomModel,
+  IMediaModel,
 } from 'models/types';
 
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
@@ -97,6 +98,7 @@ export interface IConnection extends Connection {
   Session?: ISessionModel;
   Room?: IRoomModel;
   Message?: IMessageModel;
+  Media?: IMediaModel;
   Notification?: INotificationModel;
 }
 
@@ -217,6 +219,7 @@ export enum ConnType {
   User = 'User',
   Session = 'Session',
   Chats = 'Chats',
+  Profile = 'Profile',
 }
 
 export enum RouterConfig {
@@ -224,6 +227,7 @@ export enum RouterConfig {
   User = ConnType.User,
   Session = ConnType.Session,
   Chats = ConnType.Chats,
+  Profile = ConnType.Profile,
 }
 
 export enum ErrorModule {

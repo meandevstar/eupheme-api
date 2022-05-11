@@ -20,12 +20,20 @@ export enum Pronoun {
   Other = 'OTHER',
 }
 
+export enum Gender {
+  Male = 'MALE',
+  Female = 'FEMALE',
+  NonBinary = 'NON_BINARY',
+}
+
 export interface IUser {
   email: string;
   username: string;
   name?: string;  // Legal Name
   displayName?: string;
-  pronoun?: Pronoun;
+  title?: string;
+  pronoun?: string;
+  gender?: Gender;
   timezone: string;
   type?: UserType;
   status?: UserStatus;

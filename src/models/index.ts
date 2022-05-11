@@ -9,11 +9,13 @@ import {
   IMessageDocument,
   IRoomDocument,
   INotificationDocument,
+  IMediaDocument,
 } from 'models/types';
 import sessionSchema from './schemas/session.schema';
 import roomSchema from './schemas/room.schema';
 import messageSchema from './schemas/message.schema';
 import notificationSchema from './schemas/notification.schema';
+import mediaSchema from './schemas/media.schema';
 
 const connections: IDBConnectionMap = {};
 
@@ -22,6 +24,7 @@ function registerModels(conn: IConnection) {
   conn.Session = conn.model<ISessionDocument>('Session', sessionSchema, 'sessions');
   conn.Room = conn.model<IRoomDocument>('Room', roomSchema, 'rooms');
   conn.Message = conn.model<IMessageDocument>('Message', messageSchema, 'messages');
+  conn.Media = conn.model<IMediaDocument>('Media', mediaSchema, 'medias');
   conn.Notification = conn.model<INotificationDocument>(
     'Notification',
     notificationSchema,
@@ -31,10 +34,18 @@ function registerModels(conn: IConnection) {
   // create collections if does not exists, to support multi-transaction
   conn.User.createCollection();
   conn.Session.createCollection();
+  conn.Room.createCollection();
+  conn.Message.createCollection();
+  conn.Media.createCollection();
+  conn.Notification.createCollection();
 
   // ensure indexes
   conn.User.ensureIndexes();
   conn.Session.ensureIndexes();
+  conn.Room.ensureIndexes();
+  conn.Message.ensureIndexes();
+  conn.Media.ensureIndexes();
+  conn.Notification.ensureIndexes();
 }
 
 export async function connect(singleConnMode?: boolean, uri?: string) {

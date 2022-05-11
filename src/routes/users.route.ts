@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import formidable from 'formidable';
 import fs from 'fs';
-import { createController, createError, getBaseRoute } from 'common/utils';
+import { promisify } from 'util';
+import { createController, createError, formidablePromise, getBaseRoute } from 'common/utils';
 import { IQueryPayload, IRequest, IRoute, RouterConfig, StatusCode } from 'common/types';
 import validate from 'middlewares/validate.middleware';
 import isAuthenticated from 'middlewares/auth.middleware';
@@ -31,60 +32,40 @@ export default class UserRoute implements IRoute {
   private initializeRoutes() {
     this.router.post(
       '/',
-      createController(async (req: IRequest) => {
-        const result = await new Promise((resolve, reject) => {
-          new formidable.IncomingForm().parse(req, async (err, fields, files) => {
-            try {
-              if (err) {
-                throw err;
-              }
+      createController(async (req: IRequest, res: any) => {
+        const { fields, files } = await formidablePromise(req);
+        // validate
+        const cusReq = {
+          body: fields,
+          context: {},
+        } as any;
+        await promisify(validate(userRegisterSchema))(cusReq, res);
 
-              // validate
-              const cusReq = {
-                body: fields,
-                context: {},
-              } as any;
-              await new Promise((_resolve, _reject) =>
-                validate(userRegisterSchema)(cusReq, null, (error) => {
-                  if (error) {
-                    _reject(error);
-                  } else {
-                    _resolve(null);
-                  }
-                })
+        if (cusReq.context.payload.type === UserType.Creator) {
+          if (files.idFile) {
+            const uploadPath = `documents/file_${Date.now()}`;
+            const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
+            cusReq.context.payload.idUrl = await uploadFile(
+              buf,
+              (files.idFile as formidable.File).mimetype,
+              uploadPath,
+              true
+            );
+
+            if (!cusReq.context.payload.idUrl) {
+              throw createError(
+                StatusCode.INTERNAL_SERVER_ERROR,
+                'Something went wrong, please try again later'
               );
-
-              if (cusReq.context.payload.type === UserType.Creator) {
-                if (files.idFile) {
-                  const uploadPath = `documents/file_${Date.now()}`;
-                  const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
-                  cusReq.context.payload.idUrl = await uploadFile(
-                    buf,
-                    (files.idFile as formidable.File).mimetype,
-                    uploadPath,
-                    true
-                  );
-
-                  if (!cusReq.context.payload.idUrl) {
-                    throw createError(
-                      StatusCode.INTERNAL_SERVER_ERROR,
-                      'Something went wrong, please try again later'
-                    );
-                  }
-                } else {
-                  throw createError(StatusCode.BAD_REQUEST, 'ID File is required');
-                }
-              } else if (files.idFile) {
-                throw createError(StatusCode.BAD_REQUEST, 'ID file is not valid payload');
-              }
-
-              const res = await UserModule.registerUser(req.context, cusReq.context.payload);
-              resolve(res);
-            } catch (error) {
-              reject(error);
             }
-          });
-        });
+          } else {
+            throw createError(StatusCode.BAD_REQUEST, 'ID File is required');
+          }
+        } else if (files.idFile) {
+          throw createError(StatusCode.BAD_REQUEST, 'ID file is not valid payload');
+        }
+
+        const result = await UserModule.registerUser(req.context, cusReq.context.payload);
 
         return result;
       })
