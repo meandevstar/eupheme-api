@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { IMediaDocument, IMediaModel } from 'models/types';
+import { IMediaDocument, IMediaModel, IMediaType } from 'models/types';
 import { IBaseSchema } from 'common/types';
 
 const mediaSchema = new IBaseSchema<IMediaDocument, IMediaModel>({
@@ -7,6 +7,11 @@ const mediaSchema = new IBaseSchema<IMediaDocument, IMediaModel>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User',
+  },
+  type: {
+    type: String,
+    enum: Object.values(IMediaType),
+    default: IMediaType.Image
   },
   description: String,
   file: String,

@@ -1,15 +1,15 @@
-import { promisify } from 'util';
+import pick from 'lodash/pick';
 import jimp, { MIME_PNG } from 'jimp';
-import { IAppContext } from 'common/types';
+import { IAppContext, IQueryPayload } from 'common/types';
 import { uploadFile } from 'modules/lib/s3.module';
-import { IMedia, IMediaUploadPayload } from 'models/types';
+import { IMedia, IMediaType, IMediaUploadPayload } from 'models/types';
 
 export async function uploadProfileMedia(context: IAppContext, payload: IMediaUploadPayload) {
   const {
     user,
     conn: { Media },
   } = context;
-  const { file, name, description, isPublic } = payload;
+  const { file, name, description, public: isPublic } = payload;
   const mediaPayload: IMedia = {
     name,
     description,
@@ -18,39 +18,69 @@ export async function uploadProfileMedia(context: IAppContext, payload: IMediaUp
   };
 
   // generate private file
-  const fileType = file.mimetype.split('/')[0];
-  const dirName = `${fileType}s`;
+  mediaPayload.type = file.mimetype.split('/')[0] as IMediaType;
+  const dirName = `${mediaPayload.type}s`;
 
   let jimpFile = await jimp.read(file.filepath);
-  const originalBuf = await promisify(jimpFile.getBuffer)(MIME_PNG);
+  const originalBuf = await jimpFile.getBufferAsync(MIME_PNG);
 
   const fileName = `file_${Date.now()}`;
   mediaPayload.file = await uploadFile(
     originalBuf,
     file.mimetype,
-    `${dirName}/${fileName}}`,
+    `${dirName}/${fileName}`,
     !isPublic
   );
 
-  jimpFile = jimpFile.resize(300, 300);
-  const thumbnailBuf = await promisify(jimpFile.getBuffer)(MIME_PNG);
+  const resizeRatio = 300 / jimpFile.getWidth();
+  jimpFile = jimpFile.scale(resizeRatio);
+  const thumbnailBuf = await jimpFile.getBufferAsync(MIME_PNG);
   mediaPayload.thumbnail = await uploadFile(
     thumbnailBuf,
     file.mimetype,
-    `${dirName}/thb_${fileName}}`
+    `${dirName}/thb_${fileName}`
   );
 
   if (isPublic) {
     // generate blurred file
-    const blurredBuf = await promisify(jimpFile.blur(3).getBuffer)(MIME_PNG);
+    const blurredBuf = await jimpFile.blur(8).getBufferAsync(MIME_PNG);
     mediaPayload.blurred = await uploadFile(
       blurredBuf,
       file.mimetype,
-      `${dirName}/blr_${fileName}}`
+      `${dirName}/blr_${fileName}`
     );
   }
 
   const media = await new Media(mediaPayload).save();
 
   return media.beautify();
+}
+
+export async function getProfileMedias(context: IAppContext, payload: IQueryPayload) {
+  const {
+    user,
+    conn: { Media },
+  } = context;
+  const { query, sort, pagination } = payload;
+
+  const mediaQuery: any = {};
+  // just pass query for now
+  Object.assign(mediaQuery, pick(query, ['target', 'type']));
+
+  const countAction = Media.find(mediaQuery).countDocuments();
+  let queryAction = Media.find(mediaQuery);
+  if (sort) {
+    queryAction = queryAction.sort(sort);
+  }
+  if (pagination) {
+    queryAction = queryAction.skip(pagination.offset * pagination.limit).limit(pagination.limit);
+  }
+
+  const [total, medias] = await Promise.all([
+    countAction,
+    queryAction.select('name description thumbnail blurred').lean({ virtuals: true }),
+  ]);
+
+  // check user plan and restrict image access
+  return { total, data: medias };
 }

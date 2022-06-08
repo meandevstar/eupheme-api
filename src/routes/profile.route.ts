@@ -2,11 +2,13 @@ import { Router } from 'express';
 import { promisify } from 'util';
 import formidable from 'formidable';
 import { createController, createError, formidablePromise, getBaseRoute } from 'common/utils';
-import { IRequest, IRoute, RouterConfig, StatusCode } from 'common/types';
+import { IQueryPayload, IRequest, IRoute, RouterConfig, StatusCode } from 'common/types';
 import isAuthenticated from 'middlewares/auth.middleware';
 import validate from 'middlewares/validate.middleware';
 import * as MediaModule from 'modules/media.module';
+import { UserType } from 'models/types';
 import { mediaRegistrationSchema } from './validators/profile.validator';
+import { paginationSchema } from './validators/global.validator';
 
 export default class ProfileRoute implements IRoute {
   public path: string;
@@ -23,9 +25,29 @@ export default class ProfileRoute implements IRoute {
 
   private initializeRoutes() {
     this.router.get(
-      '/',
-      createController(async () => {
-        return 'OK';
+      '/media',
+      validate(paginationSchema),
+      createController(async (req: IRequest) => {
+        const {
+          payload: { limit, offset, sort, ...query },
+        } = req.context;
+        const queryPayload: IQueryPayload = {
+          query,
+        };
+
+        if (limit !== undefined && offset !== undefined) {
+          queryPayload.pagination = {
+            limit,
+            offset,
+          };
+        }
+        if (sort) {
+          queryPayload.sort = sort;
+        }
+
+        const users = await MediaModule.getProfileMedias(req.context, queryPayload);
+
+        return users;
       })
     );
 

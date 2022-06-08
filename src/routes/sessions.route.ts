@@ -57,7 +57,7 @@ export default class SessionRoute implements IRoute {
           },
           populate: [
             {
-              path: 'user provider',
+              path: 'participants',
               select: 'firstName lastName skills avatar rating email',
             },
           ],
