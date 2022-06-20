@@ -89,7 +89,7 @@ export async function updateProfile(context: IAppContext, payload: Partial<IUser
 
 export async function getUsers(context: IAppContext, payload: IQueryPayload) {
   const {
-    conn: { User },
+    conn: { User, Relation },
     user,
   } = context;
 
@@ -117,6 +117,14 @@ export async function getUsers(context: IAppContext, payload: IQueryPayload) {
     }
     userQuery.pronoun = {
       $in: pronouns,
+    };
+  }
+
+  // do not show users that I reported
+  const reportedUserIds = await Relation.distinct('target', { user: user.id });
+  if (reportedUserIds?.length > 0) {
+    userQuery._id = {
+      $nin: reportedUserIds,
     };
   }
 

@@ -10,12 +10,14 @@ import {
   IRoomDocument,
   INotificationDocument,
   IMediaDocument,
+  IRelationDocument,
 } from 'models/types';
 import sessionSchema from './schemas/session.schema';
 import roomSchema from './schemas/room.schema';
 import messageSchema from './schemas/message.schema';
 import notificationSchema from './schemas/notification.schema';
 import mediaSchema from './schemas/media.schema';
+import relationSchema from './schemas/relation.schema';
 
 const connections: IDBConnectionMap = {};
 
@@ -30,6 +32,7 @@ function registerModels(conn: IConnection) {
     notificationSchema,
     'notifications'
   );
+  conn.Relation = conn.model<IRelationDocument>('Relation', relationSchema, 'relations');
 
   // create collections if does not exists, to support multi-transaction
   conn.User.createCollection();
@@ -38,6 +41,7 @@ function registerModels(conn: IConnection) {
   conn.Message.createCollection();
   conn.Media.createCollection();
   conn.Notification.createCollection();
+  conn.Relation.createCollection();
 
   // ensure indexes
   conn.User.ensureIndexes();
@@ -46,6 +50,7 @@ function registerModels(conn: IConnection) {
   conn.Message.ensureIndexes();
   conn.Media.ensureIndexes();
   conn.Notification.ensureIndexes();
+  conn.Relation.ensureIndexes();
 }
 
 export async function connect(singleConnMode?: boolean, uri?: string) {

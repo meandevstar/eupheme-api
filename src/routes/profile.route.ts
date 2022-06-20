@@ -6,9 +6,10 @@ import { IQueryPayload, IRequest, IRoute, RouterConfig, StatusCode } from 'commo
 import isAuthenticated from 'middlewares/auth.middleware';
 import validate from 'middlewares/validate.middleware';
 import * as MediaModule from 'modules/media.module';
-import { UserType } from 'models/types';
+import * as RelationModule from 'modules/relation.module';
 import { mediaRegistrationSchema } from './validators/profile.validator';
 import { paginationSchema } from './validators/global.validator';
+import { RelationType } from 'models/types';
 
 export default class ProfileRoute implements IRoute {
   public path: string;
@@ -46,6 +47,36 @@ export default class ProfileRoute implements IRoute {
         }
 
         const users = await MediaModule.getProfileMedias(req.context, queryPayload);
+
+        return users;
+      })
+    );
+
+    this.router.get(
+      '/:relationType',
+      validate(paginationSchema),
+      createController(async (req: IRequest) => {
+        const {
+          payload: { limit, offset, sort, ...query },
+        } = req.context;
+        const queryPayload: IQueryPayload = {
+          query,
+        };
+
+        if (limit !== undefined && offset !== undefined) {
+          queryPayload.pagination = {
+            limit,
+            offset,
+          };
+        }
+        if (sort) {
+          queryPayload.sort = sort;
+        }
+
+        const type =
+          req.params.relationType === 'flirts' ? RelationType.Flirt : RelationType.Favorite;
+
+        const users = await RelationModule.getRelations(req.context, type, queryPayload);
 
         return users;
       })

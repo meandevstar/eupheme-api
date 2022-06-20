@@ -7,6 +7,7 @@ import UsersRoute from 'routes/users.route';
 import SessionsRoute from 'routes/sessions.route';
 import ChatsRoute from 'routes/chats.route';
 import ProfileRoute from 'routes/profile.route';
+import RelationRoute from 'routes/relation.route';
 
 (async () => {
   const app = new App('v1');
@@ -19,6 +20,7 @@ import ProfileRoute from 'routes/profile.route';
       new SessionsRoute('sessions'),
       new ChatsRoute('chats'),
       new ProfileRoute('profiles'),
+      new RelationRoute('relations'),
     ],
   );
 
