@@ -74,6 +74,7 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
       },
     },
   },
+  about: String,
 });
 
 userSchema.plugin(slugify);
@@ -93,6 +94,7 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
     'status',
     'pronoun',
     'gender',
+    'idUrl',
   ];
 
   if (!grant || grant === UserType.Admin) {
@@ -101,10 +103,12 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
   return pick(payload, allowedFields);
 };
 
-userSchema.methods.verifyPassword = function (password: string) {
-  const pwdHash = createHash('sha256', Config.pwdSecret).update(password).digest('base64');
-  return this.password === pwdHash;
-};
+// userSchema.methods.verifyPassword = function (password: string) {
+//   const pwdHash = createHash('sha256', Config.pwdSecret).update(password).digest('base64');
+//   console.log('this.password', this.password)
+//   console.log('passed password', password)
+//   return this.password === pwdHash;
+// };
 
 userSchema.methods.getToken = function () {
   const payload = {

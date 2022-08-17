@@ -29,7 +29,7 @@ export enum Gender {
 export interface IUser {
   email: string;
   username: string;
-  name?: string;  // Legal Name
+  name?: string; // Legal Name
   displayName?: string;
   title?: string;
   pronoun?: string;
@@ -46,6 +46,7 @@ export interface IUser {
   idUrl?: string;
   workingHours: IWorkingHour[];
   notifications?: INotificationSettings;
+  about?: string;
 }
 
 export interface IWorkingHour {
@@ -57,7 +58,6 @@ export interface IUserModel extends IBaseModel<IUserDocument> {}
 
 export interface IUserDocument extends IBaseDocument<IUser>, IUser {
   getToken?: () => string;
-  verifyPassword?: (password: string) => boolean;
 }
 
 export interface IAuthTokenPayload {
@@ -85,4 +85,3 @@ export interface IRegisterUserPayload extends ILoginPayload {
   username: string;
   dob: string;
 }
-

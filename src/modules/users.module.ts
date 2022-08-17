@@ -10,37 +10,52 @@ import {
 } from 'models/types';
 import { getAuthTokens } from './auth.module';
 import * as s3 from './lib/s3.module';
-import { createError } from 'common/utils';
+import { createError, verifyPassword } from 'common/utils';
 
 export async function login(context: IAppContext, payload: ILoginPayload, isAdminLogin?: boolean) {
   const { User } = context.conn;
-
+  console.log('USER', payload);
   let userQuery: any;
   if (isAdminLogin) {
     userQuery = {
       _id: payload.user,
     };
+  }else{
+    userQuery = {
+      email: payload.email,
+    };
+  }
+  try {
+      let user = await User.findOne(userQuery);
+      if (!user) throw createError(StatusCode.BAD_REQUEST, 'user does not exist');
+
+      console.log('isAdminLogin ? ', isAdminLogin);
+      console.log('USER via query', user);
+      if (!verifyPassword(payload.password, user.password)) {
+        throw createError(StatusCode.BAD_REQUEST, 'password is incorrect');
+      }
+        if (!isAdminLogin) {
+          // update user logged in count
+          user.loggedCount += 1;
+          await user.save();
+        }
+
+      const publicData = User.getPublicData(user, isAdminLogin ? UserType.Admin : undefined);
+      const tokens = await getAuthTokens(context, {
+        id: user.id,
+        type: user.type,
+        email: user.email,
+      });
+
+      return {
+        tokens,
+        user: publicData,
+      };    
+  } catch (error) {
+    // console.log("ERROR", error.message)
+    throw createError(StatusCode.BAD_REQUEST, error.message);
   }
 
-  let user = await User.findOne(userQuery);
-
-  // update user logged in count
-  if (!isAdminLogin) {
-    user.loggedCount += 1;
-    await user.save();
-  }
-
-  const publicData = User.getPublicData(user, isAdminLogin ? UserType.Admin : undefined);
-  const tokens = await getAuthTokens(context, {
-    id: user.id,
-    type: user.type,
-    email: user.email,
-  });
-
-  return {
-    tokens,
-    user: publicData,
-  };
 }
 
 export async function registerUser(context: IAppContext, payload: IRegisterUserPayload) {

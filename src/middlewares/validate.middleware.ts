@@ -33,8 +33,9 @@ export default function(schemaObject: any, source?: RequestSource, relation?: an
       //     joiObject = joiObject[key](...params);
       //   }
       // }
-
+      // console.log("validate mid", payload)
       req.context.payload = await schema.validateAsync(payload);
+      // console.log('req.context.payload', req.context.payload);
 
       next();
     } catch (error) {

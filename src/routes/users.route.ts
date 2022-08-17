@@ -49,7 +49,7 @@ export default class UserRoute implements IRoute {
               buf,
               (files.idFile as formidable.File).mimetype,
               uploadPath,
-              true
+              false
             );
 
             if (!cusReq.context.payload.idUrl) {
