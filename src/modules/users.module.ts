@@ -1,4 +1,5 @@
 import pick from 'lodash/pick';
+var mongoose = require('mongoose');
 
 import { IAppContext, IQueryPayload, StatusCode } from 'common/types';
 import {
@@ -8,6 +9,7 @@ import {
   UserType,
   NotificationType,
   UpdatedMediaUrlPayload,
+  IMedia
 } from 'models/types';
 import { getAuthTokens } from './auth.module';
 import * as s3 from './lib/s3.module';
@@ -160,15 +162,36 @@ export async function getUserPublicProfile(context: IAppContext, userId: any) {
   const { User } = context.conn;
   console.log('working with', 'userId', userId.id);
   try {
-    let userInfo = User.find({ _id: userId.id });
+    //let userInfo = User.find({ _id: userId.id });
+    let  userInfo=await User.aggregate([
+      { $match : { _id :mongoose.Types.ObjectId(userId.id) } },
 
+      { 
+        $lookup:{
+            from:"medias" ,
+            let:{privateImageId:"$privateImagesThumbnails"},
+            pipeline:[
+              {
+                $match:{creator:"$$privateImageId"}
+              },
+              {
+                $project:{
+                  file:1
+                }
+              },
+            ],
+
+            as:"privateImagesThumnailsss"
+        }
+       }
+    
+    ])
+ 
     if (!userInfo) {
       throw createError(StatusCode.FORBIDDEN, 'profile not found');
     } else {
-      // Object.assign(userQuery, pick(query, ['type', 'status', '_id']));
-      // return User.getProfileData(userInfo, undefined);
       return userInfo;
-    }
+     }
   } catch (error) {
     throw createError(StatusCode.BAD_REQUEST, error.message);
   }
@@ -190,26 +213,40 @@ export async function sendFlirtRequest(context: IAppContext, userId: any) {
     // throw createError(StatusCode.BAD_REQUEST, error.message);
   }
 }
+ 
 export async function updateUsersMediaUrl(context: IAppContext, payload: UpdatedMediaUrlPayload) {
-  const { User } = context.conn;
-  const { userId, mediaType, url } = payload;
+  const {
+    user,
+    conn: { Media,User },
+  } = context;  
+  const { userId, mediaType, url,fileName,isStory } = payload;
   try {
-    const updatedUser = User.findOneAndUpdate(
-      { _id: userId },
-      ...(mediaType === 'image'
-        ? [
-            {
-              $push: { privateImagesThumbnails: url },
-            },
-          ]
-        : [
-            {
-              $push: { privateVideosThumbnails: url },
-            },
-          ])
-    );
-    return updatedUser;
+    const mediaPayload: IMedia = {
+      name:fileName,
+      description:"Media Upload",
+      creator: mongoose.Types.ObjectId(userId),
+      private:isStory ,
+      file:url
+    }
+    const media = await new Media(mediaPayload).save();
+    const updatedUser = await User.findOneAndUpdate(
+             { _id: userId },
+             ...(mediaType === 'image'
+               ? [
+                   {
+                     $push: { privateImagesThumbnails: media?._id },
+                   },
+                 ]
+               : [
+                   {
+                     $push: { privateVideosThumbnails: media?._id },
+                  },
+                ])
+          );
+           return updatedUser;
+   
   } catch (error) {
+    console.log("this is error",error);
     throw createError(StatusCode.BAD_REQUEST, 'Something Went Wrong');
   }
 }

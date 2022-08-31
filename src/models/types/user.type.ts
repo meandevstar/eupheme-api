@@ -48,8 +48,8 @@ export interface IUser {
   notifications?: INotificationSettings;
   about?: string;
   publicStoryImages?: Array<String>;
-  privateVideosThumbnails?: Array<String>;
-  privateImagesThumbnails?: Array<String>;
+  privateVideosThumbnails?: Array<IUser>;
+  privateImagesThumbnails?: Array<IUser>;
 }
 
 export interface IWorkingHour {
@@ -92,4 +92,6 @@ export interface UpdatedMediaUrlPayload {
   userId?: string;
   mediaType?: string;
   url?: string;
+  fileName?:string
+  isStory?:boolean
 }

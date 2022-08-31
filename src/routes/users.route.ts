@@ -171,7 +171,7 @@ export default class UserRoute implements IRoute {
       '/uploadMedia',
       createController(async (req: IRequest, res: any) => {
         const { fields, files } = await formidablePromise(req);
-        const { userId, mediaType } = fields;
+        const { userId, mediaType,isStory } = fields;
         // const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
         // console.log('filr itself', files);
         const fileName = (files.file as formidable.File).originalFilename;
@@ -185,6 +185,8 @@ export default class UserRoute implements IRoute {
             userId,
             mediaType: mediaType === 'image' ? 'image' : 'video',
             url,
+            fileName,
+            isStory
           });
           if (!result) {
             throw createError(

@@ -97,7 +97,7 @@ export function createSignedUrl(imageKey: string, isPrivate: Boolean) {
   const url = s3.getSignedUrl('getObject', {
     Bucket: isPrivate ? config.s3PrivateBucket : config.s3PublicBucket,
     Key: imageKey,
-    Expires: 5,
+    Expires: 40,
   });
   return url;
 }
