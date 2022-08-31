@@ -38,8 +38,8 @@ export function initialize(ctx: IAppContext) {
     },
   });
   io.adapter(createAdapter(pubClient, subClient));
-
   redisEmitter = new Emitter(pubClient);
+  console.log('all is week');
 
   io.engine.on('connection_error', (err: any) => {
     console.log(err.code, err.message);
@@ -131,7 +131,7 @@ function registerSocketEvents(socket: Socket) {
       }
 
       const roomName = getChatRoomName(room);
-      
+
       if (socket.rooms.has(roomName)) {
         socket.leave(getChatRoomName(room));
       }
@@ -150,7 +150,7 @@ function registerSocketEvents(socket: Socket) {
         // update session call time
         const newContext = {
           user: socket.data,
-          ...context
+          ...context,
         } as unknown as IAppContext;
         updateSession(newContext, payload.session, { status: SessionStatus.InProgress });
       }

@@ -7,10 +7,12 @@ import {
   ILoginPayload,
   UserType,
   NotificationType,
+  UpdatedMediaUrlPayload,
 } from 'models/types';
 import { getAuthTokens } from './auth.module';
 import * as s3 from './lib/s3.module';
 import { createError, verifyPassword } from 'common/utils';
+import userSchema from 'models/schemas/user.schema';
 
 export async function login(context: IAppContext, payload: ILoginPayload, isAdminLogin?: boolean) {
   const { User } = context.conn;
@@ -20,42 +22,41 @@ export async function login(context: IAppContext, payload: ILoginPayload, isAdmi
     userQuery = {
       _id: payload.user,
     };
-  }else{
+  } else {
     userQuery = {
       email: payload.email,
     };
   }
   try {
-      let user = await User.findOne(userQuery);
-      if (!user) throw createError(StatusCode.BAD_REQUEST, 'user does not exist');
+    let user = await User.findOne(userQuery);
+    if (!user) throw createError(StatusCode.BAD_REQUEST, 'user does not exist');
 
-      console.log('isAdminLogin ? ', isAdminLogin);
-      console.log('USER via query', user);
-      if (!verifyPassword(payload.password, user.password)) {
-        throw createError(StatusCode.BAD_REQUEST, 'password is incorrect');
-      }
-        if (!isAdminLogin) {
-          // update user logged in count
-          user.loggedCount += 1;
-          await user.save();
-        }
+    console.log('isAdminLogin ? ', isAdminLogin);
+    console.log('USER via query', user);
+    if (!verifyPassword(payload.password, user.password)) {
+      throw createError(StatusCode.BAD_REQUEST, 'password is incorrect');
+    }
+    if (!isAdminLogin) {
+      // update user logged in count
+      user.loggedCount += 1;
+      await user.save();
+    }
 
-      const publicData = User.getPublicData(user, isAdminLogin ? UserType.Admin : undefined);
-      const tokens = await getAuthTokens(context, {
-        id: user.id,
-        type: user.type,
-        email: user.email,
-      });
+    const publicData = User.getPublicData(user, isAdminLogin ? UserType.Admin : undefined);
+    const tokens = await getAuthTokens(context, {
+      id: user.id,
+      type: user.type,
+      email: user.email,
+    });
 
-      return {
-        tokens,
-        user: publicData,
-      };    
+    return {
+      tokens,
+      user: publicData,
+    };
   } catch (error) {
     // console.log("ERROR", error.message)
     throw createError(StatusCode.BAD_REQUEST, error.message);
   }
-
 }
 
 export async function registerUser(context: IAppContext, payload: IRegisterUserPayload) {
@@ -153,4 +154,62 @@ export async function getUsers(context: IAppContext, payload: IQueryPayload) {
     total,
     data: users.map((v) => User.getPublicData(v, user.type)),
   };
+}
+
+export async function getUserPublicProfile(context: IAppContext, userId: any) {
+  const { User } = context.conn;
+  console.log('working with', 'userId', userId.id);
+  try {
+    let userInfo = User.find({ _id: userId.id });
+
+    if (!userInfo) {
+      throw createError(StatusCode.FORBIDDEN, 'profile not found');
+    } else {
+      // Object.assign(userQuery, pick(query, ['type', 'status', '_id']));
+      // return User.getProfileData(userInfo, undefined);
+      return userInfo;
+    }
+  } catch (error) {
+    throw createError(StatusCode.BAD_REQUEST, error.message);
+  }
+}
+export async function sendFlirtRequest(context: IAppContext, userId: any) {
+  const {
+    conn: { User },
+    user,
+  } = context;
+  console.log('this is flirt request end point');
+  try {
+    // let userInfo = User.find({ _id: userId.id });
+    // if (!userInfo) {
+    //   throw createError(StatusCode.FORBIDDEN, 'profile not found');
+    // } else {
+    //   return userInfo;
+    // }
+  } catch (error) {
+    // throw createError(StatusCode.BAD_REQUEST, error.message);
+  }
+}
+export async function updateUsersMediaUrl(context: IAppContext, payload: UpdatedMediaUrlPayload) {
+  const { User } = context.conn;
+  const { userId, mediaType, url } = payload;
+  try {
+    const updatedUser = User.findOneAndUpdate(
+      { _id: userId },
+      ...(mediaType === 'image'
+        ? [
+            {
+              $push: { privateImagesThumbnails: url },
+            },
+          ]
+        : [
+            {
+              $push: { privateVideosThumbnails: url },
+            },
+          ])
+    );
+    return updatedUser;
+  } catch (error) {
+    throw createError(StatusCode.BAD_REQUEST, 'Something Went Wrong');
+  }
 }

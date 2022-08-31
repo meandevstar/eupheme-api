@@ -92,3 +92,12 @@ export function getValidS3() {
 
   return new AWS.S3(awsConfig);
 }
+export function createSignedUrl(imageKey: string, isPrivate: Boolean) {
+  const s3 = getValidS3();
+  const url = s3.getSignedUrl('getObject', {
+    Bucket: isPrivate ? config.s3PrivateBucket : config.s3PublicBucket,
+    Key: imageKey,
+    Expires: 5,
+  });
+  return url;
+}

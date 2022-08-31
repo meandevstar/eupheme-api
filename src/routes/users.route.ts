@@ -10,11 +10,13 @@ import * as UserModule from 'modules/users.module';
 import {
   getUsersSchema,
   userLoginSchema,
+  userProfileSchema,
   userRegisterSchema,
   userUpdateSchema,
 } from './validators/users.validator';
 import { UserType } from 'models/types';
-import { uploadFile } from 'modules/lib/s3.module';
+import { uploadFile, createSignedUrl } from 'modules/lib/s3.module';
+import { result } from 'lodash';
 
 export default class UserRoute implements IRoute {
   public path: string;
@@ -89,10 +91,35 @@ export default class UserRoute implements IRoute {
           conn: { User },
           user,
         } = req.context;
-
-        return User.getPublicData(user);
+        // User.getPublicData(user, isAdminLogin ? UserType.Admin : undefined);
+        return User.getProfileData(user);
       })
     );
+
+    this.router.get(
+      '/profile/:id',
+      validate(userProfileSchema),
+      isAuthenticated,
+      createController(async (req: IRequest) => {
+        // console.log('reqcontext', req.context);
+        const result = await UserModule.getUserPublicProfile(req.context, req.context.payload);
+        // return User.getProfileData(req.params.id);
+        return result;
+      })
+    );
+
+    // this.router.get(
+    //   '/profile',
+    //   isAuthenticated,
+    //   createController(async (req: IRequest) => {
+    //     const {
+    //       conn: { User },
+    //       user,
+    //     } = req.context;
+
+    //     return User.getPublicData(user);
+    //   })
+    // );
 
     this.router.put(
       '/update-profile',
@@ -138,6 +165,38 @@ export default class UserRoute implements IRoute {
         const users = await UserModule.getUsers(req.context, queryPayload);
 
         return users;
+      })
+    );
+    this.router.post(
+      '/uploadMedia',
+      createController(async (req: IRequest, res: any) => {
+        const { fields, files } = await formidablePromise(req);
+        const { userId, mediaType } = fields;
+        // const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
+        // console.log('filr itself', files);
+        const fileName = (files.file as formidable.File).originalFilename;
+        if (files.file) {
+          console.log('gilr', files.file);
+          const uploadPath = `images/${userId}/${fileName}`;
+          const buf = fs.readFileSync((files.file as formidable.File).filepath);
+          await uploadFile(buf, (files.file as formidable.File).mimetype, uploadPath, true);
+          const url = createSignedUrl(uploadPath, true);
+          const result = await UserModule.updateUsersMediaUrl(req.context, {
+            userId,
+            mediaType: mediaType === 'image' ? 'image' : 'video',
+            url,
+          });
+          if (!result) {
+            throw createError(
+              StatusCode.INTERNAL_SERVER_ERROR,
+              'Something went wrong, please try again later'
+            );
+          } else {
+            return result;
+          }
+        } else {
+          throw createError(StatusCode.BAD_REQUEST, 'File is required');
+        }
       })
     );
   }

@@ -104,6 +104,7 @@ export interface IConnection extends Connection {
 
 export interface IBaseModel<T> extends Model<T> {
   getPublicData?: (doc: T | LeanDocument<T>, grant?: UserType) => Partial<T | LeanDocument<T>>;
+  getProfileData?: (doc: T | LeanDocument<T>, grant?: UserType) => Partial<T | LeanDocument<T>>;
 }
 
 export interface IBaseDocument<T> extends Document<Types.ObjectId, any, T> {

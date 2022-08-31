@@ -58,6 +58,7 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   phone: String,
   dob: Date,
   idUrl: String,
+  about: String,
   notifications: {
     email: {
       [NotificationType.IncomingSession]: {
@@ -74,12 +75,15 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
       },
     },
   },
-  about: String,
+  publicStoryImages: Array,
+  privateVideosThumbnails: Array,
+  privateImagesThumbnails: Array,
 });
 
 userSchema.plugin(slugify);
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {
+  console.log('document', doc);
   const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
   const allowedFields = [
     'id',
@@ -99,6 +103,29 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
 
   if (!grant || grant === UserType.Admin) {
     allowedFields.push('dob', 'phone');
+  }
+  return pick(payload, allowedFields);
+};
+userSchema.statics.getProfileData = function (doc: IUserDocument, grant?: UserType) {
+  console.log('document', doc);
+  const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
+  const allowedFields = [
+    'id',
+    'name',
+    'displayName',
+    'about',
+    'timezone',
+    'type',
+    'status',
+    'pronoun',
+    'idUrl',
+  ];
+
+  if (!grant || grant === UserType.Admin) {
+    // allowedFields.push('dob', 'phone');
+  }
+  if (doc && doc.type === UserType.Creator) {
+    allowedFields.push('publicStoryImages', 'privateVideosThumbnails', 'privateImagesThumbnails');
   }
   return pick(payload, allowedFields);
 };

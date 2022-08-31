@@ -47,6 +47,9 @@ export interface IUser {
   workingHours: IWorkingHour[];
   notifications?: INotificationSettings;
   about?: string;
+  publicStoryImages?: Array<String>;
+  privateVideosThumbnails?: Array<String>;
+  privateImagesThumbnails?: Array<String>;
 }
 
 export interface IWorkingHour {
@@ -84,4 +87,9 @@ export interface IRegisterUserPayload extends ILoginPayload {
   name: string;
   username: string;
   dob: string;
+}
+export interface UpdatedMediaUrlPayload {
+  userId?: string;
+  mediaType?: string;
+  url?: string;
 }
