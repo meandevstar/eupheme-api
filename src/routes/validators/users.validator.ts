@@ -45,6 +45,10 @@ export const userUpdateSchema = {
 export const userProfileSchema = {
   id: Joi.objectId().required(),
 };
+export const flirtRequestSchema = {
+  toId: Joi.objectId().required(),
+  flirtback: Joi.boolean(),
+};
 
 export const getUsersSchema = {
   ...paginationSchema,

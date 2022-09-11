@@ -99,6 +99,7 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
     'pronoun',
     'gender',
     'idUrl',
+    'about',
   ];
 
   if (!grant || grant === UserType.Admin) {

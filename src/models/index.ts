@@ -10,12 +10,14 @@ import {
   IRoomDocument,
   INotificationDocument,
   IMediaDocument,
+  IFlirtRequestDocument,
 } from 'models/types';
 import sessionSchema from './schemas/session.schema';
 import roomSchema from './schemas/room.schema';
 import messageSchema from './schemas/message.schema';
 import notificationSchema from './schemas/notification.schema';
 import mediaSchema from './schemas/media.schema';
+import flirtRequestSchema from './schemas/flirtRequest.schema';
 
 const connections: IDBConnectionMap = {};
 
@@ -25,6 +27,7 @@ function registerModels(conn: IConnection) {
   conn.Room = conn.model<IRoomDocument>('Room', roomSchema, 'rooms');
   conn.Message = conn.model<IMessageDocument>('Message', messageSchema, 'messages');
   conn.Media = conn.model<IMediaDocument>('Media', mediaSchema, 'medias');
+  conn.Flirt = conn.model<IFlirtRequestDocument>('Flirt', flirtRequestSchema, 'flirts');
   conn.Notification = conn.model<INotificationDocument>(
     'Notification',
     notificationSchema,

@@ -8,6 +8,7 @@ import validate from 'middlewares/validate.middleware';
 import isAuthenticated from 'middlewares/auth.middleware';
 import * as UserModule from 'modules/users.module';
 import {
+  flirtRequestSchema,
   getUsersSchema,
   userLoginSchema,
   userProfileSchema,
@@ -17,6 +18,7 @@ import {
 import { UserType } from 'models/types';
 import { uploadFile, createSignedUrl } from 'modules/lib/s3.module';
 import { result } from 'lodash';
+import { getOrCreateRoomSchema } from './validators/chats.validator';
 
 export default class UserRoute implements IRoute {
   public path: string;
@@ -101,9 +103,8 @@ export default class UserRoute implements IRoute {
       validate(userProfileSchema),
       isAuthenticated,
       createController(async (req: IRequest) => {
-        // console.log('reqcontext', req.context);
+        const { user } = req.context;
         const result = await UserModule.getUserPublicProfile(req.context, req.context.payload);
-        // return User.getProfileData(req.params.id);
         return result;
       })
     );
@@ -168,10 +169,37 @@ export default class UserRoute implements IRoute {
       })
     );
     this.router.post(
+      '/sendflirtRequest',
+      validate(flirtRequestSchema),
+      isAuthenticated,
+      createController(async (req: IRequest, res: any) => {
+        const result = await UserModule.sendFlirtRequest(req.context, req.context.payload);
+
+        return result;
+      })
+    );
+    this.router.get(
+      '/getflirtRequestList',
+      isAuthenticated,
+      createController(async (req: IRequest, res: any) => {
+        const result = await UserModule.getFlirtsList(req.context, req.context.payload);
+        return result;
+      })
+    );
+    this.router.get(
+      '/profileStats',
+      isAuthenticated,
+      createController(async (req: IRequest, res: any) => {
+        const result = await UserModule.getFlirtsListCount(req.context, req.context.payload);
+        return result;
+      })
+    );
+
+    this.router.post(
       '/uploadMedia',
       createController(async (req: IRequest, res: any) => {
         const { fields, files } = await formidablePromise(req);
-        const { userId, mediaType,isStory } = fields;
+        const { userId, mediaType, isStory } = fields;
         // const buf = fs.readFileSync((files.idFile as formidable.File).filepath);
         // console.log('filr itself', files);
         const fileName = (files.file as formidable.File).originalFilename;
@@ -186,7 +214,7 @@ export default class UserRoute implements IRoute {
             mediaType: mediaType === 'image' ? 'image' : 'video',
             url,
             fileName,
-            isStory
+            isStory,
           });
           if (!result) {
             throw createError(

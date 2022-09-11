@@ -7,3 +7,4 @@ export * from './request.type';
 export * from './room.type';
 export * from './notification.type';
 export * from './specialRequest.type';
+export * from './flirtRequest.type';
