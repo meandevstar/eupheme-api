@@ -1,0 +1,338 @@
+Script started on 2021-12-10 11:45:29+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="120" LINES="40"]
+  }]
+}]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$   }]
+}]: command not found
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ }[Knano .[Kpm2-config.json
+[?2004h[?1049h[22;0;0t[1;40r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[38;55H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 4.8                                        pm2-config.json                                                   [1;119H(B[m[39d(B[0;7m^G(B[m Get Help    (B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut Text    (B[0;7m^J(B[m Justify     (B[0;7m^C(B[m Cur Pos     (B[0;7mM-U(B[m Undo[106G(B[0;7mM-A(B[m Mark Text[40d(B[0;7m^X(B[m Exit[40;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste Text  (B[0;7m^T(B[m To Spell    (B[0;7m^_(B[m Go To Line  (B[0;7mM-E(B[m Redo[106G(B[0;7mM-6(B[m Copy Text[38d[2d[39;49m(B[m[?12l[?25h[?25l[1;111H(B[0;7mModified[38d(B[m[K[1;119H[2d(B[0;1m[31m{[3;3H[39m(B[mapps (B[0;1m[31m:[39m(B[m (B[0;1m[34m[[31m{[4;5H[39m(B[mname   (B[0;1m[31m:[39m(B[m (B[0;1m[35m"mental-api"[31m,[5;5H[39m(B[mscript (B[0;1m[31m:[39m(B[m (B[0;1m[35m"yarn"[31m,[6;5H[39m(B[margs(B[0;1m[31m:[39m(B[m (B[0;1m[35m"start[31m:[35mprod"[31m,[7;5H[39m(B[menv(B[0;1m[31m:[39m(B[m (B[0;1m[31m{[8;7H[39m(B[mNODE_ENV(B[0;1m[31m:[39m(B[m (B[0;1m[35m"development"[31m,[9;5H}[10;3H}[34m][11d[31m}[39m(B[m[?12l[?25h[?25l[38d(B[0;7mSave modified buffer?                                                                                                   [39;1H Y(B[m Yes[K[40d(B[0;7m N(B[m No  [40;16H (B[0;7m^C(B[m Cancel[K[38;23H[?12l[?25h[?25l[39d(B[0;7m^G(B[m Get Help[39;31H(B[0;7mM-D(B[m DOS Format[39;61H(B[0;7mM-A(B[m Append[39;91H(B[0;7mM-B(B[m Backup File[40d(B[0;7m^C(B[m Cancel[17G[14X[40;31H(B[0;7mM-M(B[m Mac Format[40;61H(B[0;7mM-P(B[m Prepend[40;91H(B[0;7m^T(B[m To Files[38d(B[0;7mFile Name to Write: pm2-config.json(B[m[38;36H[?12l[?25h[?25l[38;49H[1K (B[0;7m[ Writing to FIFO... ](B[m[K[38;50H    (B[0;7m[ Writing... ](B[m[K[1;111H(B[0;7m        (B[m[38;52H(B[0;7m[ Wrote 10 lines ](B[m[J[40d[?12l[?25h[40;1H[?1049l[23;0;0t[?1l>[?2004l]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ yarn[K[K[K[Kpm2 start pm2[K[K[K[K[K[K[K[K[K[K[K[K[Kyarn build:prod[K[K[K[K[K
+[2K[1G[1myarn run v1.22.17[22m
+[2K[1G[2m$ rm -rf dist && tsc -p ./tsconfig.json[22m
+[2K[1GDone in 18.33s.
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ ayr[K[K[Kyar[K[K[Ky[Kls -a
+[0m[01;34m.[0m          .env.example  .prettierignore   [01;34mdist[0m                package.json        tsconfig.json
+[34;42m..[0m         [01;34m.git[0m          :                 docker-compose.yml  pm2-config.json     tslint.json
+[01;34m.circleci[0m  .gitignore    Dockerfile        entrypoint.sh       prettier.config.js  yarn-error.log
+.env       [01;34m.nginx[0m        Dockerfile.local  [01;34mnode_modules[0m        [01;34msrc[0m                 yarn.lock
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ yarn [K[K[K[K[Kpm2 log[K[K[K[Ksta[K[K[K start pm2-config.json 
+
+                        -------------
+
+__/\\\\\\\\\\\\\____/\\\\____________/\\\\____/\\\\\\\\\_____
+ _\/\\\/////////\\\_\/\\\\\\________/\\\\\\__/\\\///////\\\___
+  _\/\\\_______\/\\\_\/\\\//\\\____/\\\//\\\_\///______\//\\\__
+   _\/\\\\\\\\\\\\\/__\/\\\\///\\\/\\\/_\/\\\___________/\\\/___
+    _\/\\\/////////____\/\\\__\///\\\/___\/\\\________/\\\//_____
+     _\/\\\_____________\/\\\____\///_____\/\\\_____/\\\//________
+      _\/\\\_____________\/\\\_____________\/\\\___/\\\/___________
+       _\/\\\_____________\/\\\_____________\/\\\__/\\\\\\\\\\\\\\\_
+        _\///______________\///______________\///__\///////////////__
+
+
+                          Runtime Edition
+
+        PM2 is a Production Process Manager for Node.js applications
+                     with a built-in Load Balancer.
+
+                Start and Daemonize any application:
+                $ pm2 start app.js
+
+                Load Balance 4 instances of api.js:
+                $ pm2 start api.js -i 4
+
+                Monitor in production:
+                $ pm2 monitor
+
+                Make pm2 auto-boot at server restart:
+                $ pm2 startup
+
+                To go further checkout:
+                http://pm2.io/
+
+
+                        -------------
+
+[32m[PM2] [39mSpawning PM2 daemon with pm2_home=/home/ubuntu/.pm2
+[32m[PM2] [39mPM2 Successfully daemonized
+[33m[PM2][WARN] [39mApplications mental-api not running, starting...
+[32m[PM2] [39mApp [mental-api] launched (1 instances)
+[90m┌─────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐[39m
+[90m│[39m[1m[36m id  [39m[22m[90m│[39m[1m[36m name          [39m[22m[90m│[39m[1m[36m namespace   [39m[22m[90m│[39m[1m[36m version [39m[22m[90m│[39m[1m[36m mode    [39m[22m[90m│[39m[1m[36m pid      [39m[22m[90m│[39m[1m[36m uptime [39m[22m[90m│[39m[1m[36m ↺    [39m[22m[90m│[39m[1m[36m status    [39m[22m[90m│[39m[1m[36m cpu      [39m[22m[90m│[39m[1m[36m mem      [39m[22m[90m│[39m[1m[36m user     [39m[22m[90m│[39m[1m[36m watching [39m[22m[90m│[39m
+[90m├─────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤[39m
+[90m│[39m[1m[36m [1m[36m0[39m[36m[22m[1m   [39m[22m[90m│[39m mental-api    [90m│[39m default     [90m│[39m 0.39.0  [90m│[39m [7m[1mfork[22m[27m    [90m│[39m 4108     [90m│[39m 0s     [90m│[39m 0    [90m│[39m [32m[1monline[22m[39m    [90m│[39m 0%       [90m│[39m 32.3mb   [90m│[39m [1mubuntu[22m   [90m│[39m [90mdisabled[39m [90m│[39m
+[90m└─────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘[39m
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2[K[K[Kpm2 log
+[1m[90m[TAILING] Tailing last 15 lines for [all] processes (change the value with --lines option)[39m[22m
+[90m/home/ubuntu/.pm2/pm2.log last 15 lines:[39m
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: PM2 version          : 5.1.2
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Node.js version      : 16.9.1
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Current arch         : x64
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: PM2 home             : /home/ubuntu/.pm2
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: PM2 PID file         : /home/ubuntu/.pm2/pm2.pid
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: RPC socket file      : /home/ubuntu/.pm2/rpc.sock
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: BUS socket file      : /home/ubuntu/.pm2/pub.sock
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Application log path : /home/ubuntu/.pm2/logs
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Worker Interval      : 30000
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Process dump file    : /home/ubuntu/.pm2/dump.pm2
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: Concurrent actions   : 2
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: SIGTERM timeout      : 1600
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: ===============================================================================
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: App [mental-api:0] starting in -fork mode-
+[34mPM2        | [39m2021-12-10T11:50:59: PM2 log: App [mental-api:0] online
+
+[90m/home/ubuntu/.pm2/logs/mental-api-out.log last 15 lines:[39m
+[32m0|mental-a | [39mnnect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:03"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:03"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:04"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:04"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:05"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:06"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:06"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:07"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:08"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:09"}
+
+[90m/home/ubuntu/.pm2/logs/mental-api-error.log last 15 lines:[39m
+[31m0|mental-a | [39m[ioredis] Unhandled error event: Error: connect ECONNREFUSED 127.0.0.1:6379
+[31m0|mental-a | [39m    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)
+[31m0|mental-a | [39m[ioredis] Unhandled error event: Error: connect ECONNREFUSED 127.0.0.1:6379
+[31m0|mental-a | [39m    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:10"}
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:11"}
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:12"}
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[32m0|mental-api  | [39m[31merror[39m: uncaughtException: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+[32m0|mental-api  | [39mMaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+[32m0|mental-api  | [39m    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)
+[32m0|mental-api  | [39m    at Object.onceWrapper (node:events:514:26)
+[32m0|mental-api  | [39m    at Socket.emit (node:events:394:28)
+[32m0|mental-api  | [39m    at Socket.emit (node:domain:475:12)
+[32m0|mental-api  | [39m    at TCP.<anonymous> (node:net:672:12) {"date":"Fri Dec 10 2021 11:51:12 GMT+0000 (Coordinated Universal Time)","error":{},"exception":true,"os":{"loadavg":[0.29,0.16,0.07],"uptime":8924.66},"process":{"argv":["/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","/var/www/eupheme-api/dist/server.js"],"cwd":"/var/www/eupheme-api","execPath":"/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","gid":1000,"memoryUsage":{"arrayBuffers":36314295,"external":37994555,"heapTotal":55906304,"heapUsed":37331256,"rss":107450368},"pid":4128,"uid":1000,"version":"v16.9.1"},"stack":"MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to \"maxRetriesPerRequest\" option for details.\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)\n    at Object.onceWrapper (node:events:514:26)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at TCP.<anonymous> (node:net:672:12)","timestamp":"2021-12-10 11:51:12","trace":[{"column":37,"file":"/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js","function":null,"line":176,"method":null,"native":false},{"column":26,"file":"node:events","function":"Object.onceWrapper","line":514,"method":"onceWrapper","native":false},{"column":28,"file":"node:events","function":"Socket.emit","line":394,"method":"emit","native":false},{"column":12,"file":"node:domain","function":"Socket.emit","line":475,"method":"emit","native":false},{"column":12,"file":"node:net","function":null,"line":672,"method":null,"native":false}]}
+[32m0|mental-api  | [39m[31merror[39m: uncaughtException: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+[32m0|mental-api  | [39mMaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to "maxRetriesPerRequest" option for details.
+[32m0|mental-api  | [39m    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)
+[32m0|mental-api  | [39m    at Object.onceWrapper (node:events:514:26)
+[32m0|mental-api  | [39m    at Socket.emit (node:events:394:28)
+[32m0|mental-api  | [39m    at Socket.emit (node:domain:475:12)
+[32m0|mental-api  | [39m    at TCP.<anonymous> (node:net:672:12) {"date":"Fri Dec 10 2021 11:51:12 GMT+0000 (Coordinated Universal Time)","error":{},"exception":true,"os":{"loadavg":[0.29,0.16,0.07],"uptime":8924.66},"process":{"argv":["/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","/var/www/eupheme-api/dist/server.js"],"cwd":"/var/www/eupheme-api","execPath":"/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","gid":1000,"memoryUsage":{"arrayBuffers":36314319,"external":37994619,"heapTotal":55906304,"heapUsed":37400392,"rss":107450368},"pid":4128,"uid":1000,"version":"v16.9.1"},"stack":"MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to \"maxRetriesPerRequest\" option for details.\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)\n    at Object.onceWrapper (node:events:514:26)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at TCP.<anonymous> (node:net:672:12)","timestamp":"2021-12-10 11:51:12","trace":[{"column":37,"file":"/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js","function":null,"line":176,"method":null,"native":false},{"column":26,"file":"node:events","function":"Object.onceWrapper","line":514,"method":"onceWrapper","native":false},{"column":28,"file":"node:events","function":"Socket.emit","line":394,"method":"emit","native":false},{"column":12,"file":"node:domain","function":"Socket.emit","line":475,"method":"emit","native":false},{"column":12,"file":"node:net","function":null,"line":672,"method":null,"native":false}]}
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:13"}
+^C
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 kill
+[32m[PM2] [39mApplying action deleteProcessId on app [all](ids: [ 0 ])
+[32m[PM2] [39m[mental-api](0) ✓
+[32m[PM2] [39m[v] All Applications Stopped
+[32m[PM2] [39m[v] PM2 Daemon Stopped
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ nano pm2-config.json 
+[?2004h[?1049h[22;0;0t[1;40r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[38;54H(B[0;7m[ Reading... ](B[m[38;52H(B[0;7m[ Read 10 lines ](B[m[H(B[0;7m  GNU nano 4.8                                        pm2-config.json                                                   [1;119H(B[m[39d(B[0;7m^G(B[m Get Help    (B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut Text    (B[0;7m^J(B[m Justify     (B[0;7m^C(B[m Cur Pos     (B[0;7mM-U(B[m Undo[106G(B[0;7mM-A(B[m Mark Text[40d(B[0;7m^X(B[m Exit[40;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste Text  (B[0;7m^T(B[m To Spell    (B[0;7m^_(B[m Go To Line  (B[0;7mM-E(B[m Redo[106G(B[0;7mM-6(B[m Copy Text[38d[2d(B[0;1m[31m{[3;3H[39m(B[mapps (B[0;1m[31m:[39m(B[m (B[0;1m[34m[[31m{[4;5H[39m(B[mname   (B[0;1m[31m:[39m(B[m (B[0;1m[35m"mental-api"[31m,[5;5H[39m(B[mscript (B[0;1m[31m:[39m(B[m (B[0;1m[35m"yarn"[31m,[6;5H[39m(B[margs(B[0;1m[31m:[39m(B[m (B[0;1m[35m"start[31m:[35mprod"[31m,[7;5H[39m(B[menv(B[0;1m[31m:[39m(B[m (B[0;1m[31m{[8;7H[39m(B[mNODE_ENV(B[0;1m[31m:[39m(B[m (B[0;1m[35m"development"[31m,[9;5H}[10;3H}[34m][11d[31m}[2d[39m(B[m[?12l[?25h[?25l[38;36H(B[0;7m[ line 1/11 (9%), col 1/2 (50%), char 0/141 (0%) ](B[m[2d[?12l[?25h[?25l[38d[J[40d[?12l[?25h[40;1H[?1049l[23;0;0t[?1l>[?2004l]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2[K[K[Knano .env
+[?2004h[?1049h[22;0;0t[1;40r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[38;54H(B[0;7m[ Reading... ](B[m[38;52H(B[0;7m[ Read 22 lines ](B[m[H(B[0;7m  GNU nano 4.8                                              .env                                                        [1;119H(B[m[39d(B[0;7m^G(B[m Get Help    (B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut Text    (B[0;7m^J(B[m Justify     (B[0;7m^C(B[m Cur Pos     (B[0;7mM-U(B[m Undo[106G(B[0;7mM-A(B[m Mark Text[40d(B[0;7m^X(B[m Exit[40;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste Text  (B[0;7m^T(B[m To Spell    (B[0;7m^_(B[m Go To Line  (B[0;7mM-E(B[m Redo[106G(B[0;7mM-6(B[m Copy Text[38d[2d[39;49m[32mTZ=UTC[3dNODE_ENV=development[4d[36mDB_URL=mongodb+srv:/[35m/admin:7v7baSPk58STvpny@eupheme-dev.a2l4f.mongodb.net/eupheme-dev?retryWrites=true&w=majority[5d[32mPORT=9001[6d[36mLOG_DB_URL=mongodb+srv:/[35m/admin:7v7baSPk58STvpny@eupheme-dev.a2l4f.mongodb.net/eupheme-dev?retryWrites=true&w=majority[7d[32mREDIS_HOST=127.0.0.1[8dREDIS_PORT=6379[9dSOCKET_PORT=9002[11dJWT_ALGORITHM='HS256'[12dJWT_EXPIRES_IN='7d'[13dJWT_SECRET='VBz3FSqJA4Q8VS3K'[14dJWT_REFRESH_EXPIRES_IN='30d'[15dJWT_REFRESH_SECRET='bxGahsrDBAaUn47p'[17dAWS_ACCESS_KEY_ID=AKIAXQG4JVDYTEEKLD74[18dAWS_SECRET_ACCESS_KEY=0xJ5y2sx5bAlN+MJgLP6e0Eh56s51bGXDN5KSb0h[19dAWS_REGION=us-east[35m-2[20d[32mS3_BUCKET=[22dOPENTOK_API_KEY=[23dOPENTOK_API_SECRET=[2d[39m(B[m[?12l[?25h[?25l[4d[?12l[?25h[?25l[5d[?12l[?25h[?25l[6d[?12l[?25h[?25l[8d[?12l[?25h[?25l[A[?12l[?25h[?25l[5d[?12l[?25h[?25l[6d[?12l[?25h[?25l[7d[?12l[?25h[?25l[7;21H[?12l[?25h[?25l[1;111H(B[0;7mModified(B[m[7;20H [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l [?12l[?25h[?25l[32meupheme-dev.9yvnup.ng.0001.use2.cache.amazonaws.com[38d[39m(B[m[K[7;63H[?12l[?25h[?25l[8;16H[?12l[?25h[?25l[38d(B[0;7mSave modified buffer?                                                                                                   [39;1H Y(B[m Yes[K[40d(B[0;7m N(B[m No  [40;16H (B[0;7m^C(B[m Cancel[K[38;23H[?12l[?25h[?25l[39d(B[0;7m^G(B[m Get Help[39;31H(B[0;7mM-D(B[m DOS Format[39;61H(B[0;7mM-A(B[m Append[39;91H(B[0;7mM-B(B[m Backup File[40d(B[0;7m^C(B[m Cancel[17G[14X[40;31H(B[0;7mM-M(B[m Mac Format[40;61H(B[0;7mM-P(B[m Prepend[40;91H(B[0;7m^T(B[m To Files[38d(B[0;7mFile Name to Write: .env(B[m[38;25H[?12l[?25h[?25l[38;53H[1K (B[0;7m[ Writing... ](B[m[K[1;111H(B[0;7m        (B[m[38;52H(B[0;7m[ Wrote 22 lines ](B[m[J[40d[?12l[?25h[40;1H[?1049l[23;0;0t[?1l>[?2004l]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 start pm2-config.json 
+[32m[PM2] [39mSpawning PM2 daemon with pm2_home=/home/ubuntu/.pm2
+[32m[PM2] [39mPM2 Successfully daemonized
+[33m[PM2][WARN] [39mApplications mental-api not running, starting...
+[32m[PM2] [39mApp [mental-api] launched (1 instances)
+[90m┌─────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐[39m
+[90m│[39m[1m[36m id  [39m[22m[90m│[39m[1m[36m name          [39m[22m[90m│[39m[1m[36m namespace   [39m[22m[90m│[39m[1m[36m version [39m[22m[90m│[39m[1m[36m mode    [39m[22m[90m│[39m[1m[36m pid      [39m[22m[90m│[39m[1m[36m uptime [39m[22m[90m│[39m[1m[36m ↺    [39m[22m[90m│[39m[1m[36m status    [39m[22m[90m│[39m[1m[36m cpu      [39m[22m[90m│[39m[1m[36m mem      [39m[22m[90m│[39m[1m[36m user     [39m[22m[90m│[39m[1m[36m watching [39m[22m[90m│[39m
+[90m├─────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤[39m
+[90m│[39m[1m[36m [1m[36m0[39m[36m[22m[1m   [39m[22m[90m│[39m mental-api    [90m│[39m default     [90m│[39m 0.39.0  [90m│[39m [7m[1mfork[22m[27m    [90m│[39m 4185     [90m│[39m 0s     [90m│[39m 0    [90m│[39m [32m[1monline[22m[39m    [90m│[39m 0%       [90m│[39m 24.7mb   [90m│[39m [1mubuntu[22m   [90m│[39m [90mdisabled[39m [90m│[39m
+[90m└─────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘[39m
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 log
+[1m[90m[TAILING] Tailing last 15 lines for [all] processes (change the value with --lines option)[39m[22m
+[90m/home/ubuntu/.pm2/pm2.log last 15 lines:[39m
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: PM2 version          : 5.1.2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Node.js version      : 16.9.1
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Current arch         : x64
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: PM2 home             : /home/ubuntu/.pm2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: PM2 PID file         : /home/ubuntu/.pm2/pm2.pid
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: RPC socket file      : /home/ubuntu/.pm2/rpc.sock
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: BUS socket file      : /home/ubuntu/.pm2/pub.sock
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Application log path : /home/ubuntu/.pm2/logs
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Worker Interval      : 30000
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Process dump file    : /home/ubuntu/.pm2/dump.pm2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Concurrent actions   : 2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: SIGTERM timeout      : 1600
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: ===============================================================================
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: App [mental-api:0] starting in -fork mode-
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: App [mental-api:0] online
+
+[90m/home/ubuntu/.pm2/logs/mental-api-error.log last 15 lines:[39m
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+
+[90m/home/ubuntu/.pm2/logs/mental-api-out.log last 15 lines:[39m
+[32m0|mental-a | [39mtails.
+[32m0|mental-a | [39m    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)
+[32m0|mental-a | [39m    at Object.onceWrapper (node:events:514:26)
+[32m0|mental-a | [39m    at Socket.emit (node:events:394:28)
+[32m0|mental-a | [39m    at Socket.emit (node:domain:475:12)
+[32m0|mental-a | [39m    at TCP.<anonymous> (node:net:672:12) {"date":"Fri Dec 10 2021 11:51:12 GMT+0000 (Coordinated Universal Time)","error":{},"exception":true,"os":{"loadavg":[0.29,0.16,0.07],"uptime":8924.66},"process":{"argv":["/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","/var/www/eupheme-api/dist/server.js"],"cwd":"/var/www/eupheme-api","execPath":"/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","gid":1000,"memoryUsage":{"arrayBuffers":36314319,"external":37994619,"heapTotal":55906304,"heapUsed":37400392,"rss":107450368},"pid":4128,"uid":1000,"version":"v16.9.1"},"stack":"MaxRetriesPerRequestError: Reached the max retries per request limit (which is 20). Refer to \"maxRetriesPerRequest\" option for details.\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js:176:37)\n    at Object.onceWrapper (node:events:514:26)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at TCP.<anonymous> (node:net:672:12)","timestamp":"2021-12-10 11:51:12","trace":[{"column":37,"file":"/var/www/eupheme-api/node_modules/ioredis/built/redis/event_handler.js","function":null,"line":176,"method":null,"native":false},{"column":26,"file":"node:events","function":"Object.onceWrapper","line":514,"method":"onceWrapper","native":false},{"column":28,"file":"node:events","function":"Socket.emit","line":394,"method":"emit","native":false},{"column":12,"file":"node:domain","function":"Socket.emit","line":475,"method":"emit","native":false},{"column":12,"file":"node:net","function":null,"line":672,"method":null,"native":false}]}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:13"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:14"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ECONNREFUSED 127.0.0.1:6379","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)"},"timestamp":"2021-12-10 11:51:15"}
+[32m0|mental-a | [39mDefault Connection closed
+[32m0|mental-a | [39mBackground Connection closed
+[32m0|mental-a | [39mUser Connection closed
+[32m0|mental-a | [39m[32minfo[39m: Socket server closed {"meta":{"context":"DEFAULT"},"timestamp":"2021-12-10 11:51:16"}
+[32m0|mental-a | [39myarn run v1.22.17
+[32m0|mental-a | [39m$ NODE_PATH=dist/ node dist/server.js
+
+[32m0|mental-api  | [39m✅️ User Connection established
+[32m0|mental-api  | [39m✅️ Default Connection established
+[32m0|mental-api  | [39m✅️ Background Connection established
+[32m0|mental-api  | [39m🔥 DB successfully connected!
+[32m0|mental-api  | [39mSocket server is listening on the port 9002
+[32m0|mental-api  | [39m[31merror[39m: uncaughtException: listen EADDRINUSE: address already in use :::9001
+[32m0|mental-api  | [39mError: listen EADDRINUSE: address already in use :::9001
+[32m0|mental-api  | [39m    at Server.setupListenHandle [as _listen2] (node:net:1319:16)
+[32m0|mental-api  | [39m    at listenInCluster (node:net:1367:12)
+[32m0|mental-api  | [39m    at Server.listen (node:net:1454:7)
+[32m0|mental-api  | [39m    at Function.listen (/var/www/eupheme-api/node_modules/express/lib/application.js:618:24)
+[32m0|mental-api  | [39m    at App.listen (/var/www/eupheme-api/dist/app.js:51:32)
+[32m0|mental-api  | [39m    at /var/www/eupheme-api/dist/server.js:37:9
+[32m0|mental-api  | [39m    at processTicksAndRejections (node:internal/process/task_queues:96:5) {"date":"Fri Dec 10 2021 11:52:13 GMT+0000 (Coordinated Universal Time)","error":{"address":"::","code":"EADDRINUSE","errno":-98,"port":9001,"syscall":"listen"},"exception":true,"os":{"loadavg":[0.91,0.35,0.14],"uptime":8985.54},"process":{"argv":["/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","/var/www/eupheme-api/dist/server.js"],"cwd":"/var/www/eupheme-api","execPath":"/home/ubuntu/.nvm/versions/node/v16.9.1/bin/node","gid":1000,"memoryUsage":{"arrayBuffers":36789655,"external":37965424,"heapTotal":55644160,"heapUsed":38787768,"rss":105590784},"pid":4205,"uid":1000,"version":"v16.9.1"},"stack":"Error: listen EADDRINUSE: address already in use :::9001\n    at Server.setupListenHandle [as _listen2] (node:net:1319:16)\n    at listenInCluster (node:net:1367:12)\n    at Server.listen (node:net:1454:7)\n    at Function.listen (/var/www/eupheme-api/node_modules/express/lib/application.js:618:24)\n    at App.listen (/var/www/eupheme-api/dist/app.js:51:32)\n    at /var/www/eupheme-api/dist/server.js:37:9\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","timestamp":"2021-12-10 11:52:13","trace":[{"column":16,"file":"node:net","function":"Server.setupListenHandle [as _listen2]","line":1319,"method":"setupListenHandle [as _listen2]","native":false},{"column":12,"file":"node:net","function":"listenInCluster","line":1367,"method":null,"native":false},{"column":7,"file":"node:net","function":"Server.listen","line":1454,"method":"listen","native":false},{"column":24,"file":"/var/www/eupheme-api/node_modules/express/lib/application.js","function":"Function.listen","line":618,"method":"listen","native":false},{"column":32,"file":"/var/www/eupheme-api/dist/app.js","function":"App.listen","line":51,"method":"listen","native":false},{"column":9,"file":"/var/www/eupheme-api/dist/server.js","function":null,"line":37,"method":null,"native":false},{"column":5,"file":"node:internal/process/task_queues","function":"processTicksAndRejections","line":96,"method":null,"native":false}]}
+^C
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm[K[Kki[K[Kls o[K[K[Ksof -i:9001
+COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+node    4128 ubuntu   76u  IPv6  40441      0t0  TCP *:9001 (LISTEN)
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ kill 
+kill: usage: kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ kill 4128
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 [K[K[K[Klsof -i:9002
+COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+node    4205 ubuntu   77u  IPv6  41024      0t0  TCP *:9002 (LISTEN)
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ kill 4205
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ losf[K[K[K[Klo[Ksof -i:9001
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 k[Kstart pm2-config.json 
+[32m[PM2] [39mApplying action restartProcessId on app [mental-api](ids: [ 0 ])
+[32m[PM2] [39m[mental-api](0) ✓
+[90m┌─────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐[39m
+[90m│[39m[1m[36m id  [39m[22m[90m│[39m[1m[36m name          [39m[22m[90m│[39m[1m[36m namespace   [39m[22m[90m│[39m[1m[36m version [39m[22m[90m│[39m[1m[36m mode    [39m[22m[90m│[39m[1m[36m pid      [39m[22m[90m│[39m[1m[36m uptime [39m[22m[90m│[39m[1m[36m ↺    [39m[22m[90m│[39m[1m[36m status    [39m[22m[90m│[39m[1m[36m cpu      [39m[22m[90m│[39m[1m[36m mem      [39m[22m[90m│[39m[1m[36m user     [39m[22m[90m│[39m[1m[36m watching [39m[22m[90m│[39m
+[90m├─────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤[39m
+[90m│[39m[1m[36m [1m[36m0[39m[36m[22m[1m   [39m[22m[90m│[39m mental-api    [90m│[39m default     [90m│[39m 0.39.0  [90m│[39m [7m[1mfork[22m[27m    [90m│[39m 4243     [90m│[39m 0s     [90m│[39m 1    [90m│[39m [32m[1monline[22m[39m    [90m│[39m 0%       [90m│[39m 14.9mb   [90m│[39m [1mubuntu[22m   [90m│[39m [90mdisabled[39m [90m│[39m
+[90m└─────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘[39m
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ pm2 log
+[1m[90m[TAILING] Tailing last 15 lines for [all] processes (change the value with --lines option)[39m[22m
+[90m/home/ubuntu/.pm2/pm2.log last 15 lines:[39m
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: RPC socket file      : /home/ubuntu/.pm2/rpc.sock
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: BUS socket file      : /home/ubuntu/.pm2/pub.sock
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Application log path : /home/ubuntu/.pm2/logs
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Worker Interval      : 30000
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Process dump file    : /home/ubuntu/.pm2/dump.pm2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: Concurrent actions   : 2
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: SIGTERM timeout      : 1600
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: ===============================================================================
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: App [mental-api:0] starting in -fork mode-
+[34mPM2        | [39m2021-12-10T11:52:08: PM2 log: App [mental-api:0] online
+[34mPM2        | [39m2021-12-10T11:53:00: PM2 log: Stopping app:mental-api id:0
+[34mPM2        | [39m2021-12-10T11:53:00: PM2 log: App [mental-api:0] exited with code [0] via signal [SIGINT]
+[34mPM2        | [39m2021-12-10T11:53:00: PM2 log: pid=4185 msg=process killed
+[34mPM2        | [39m2021-12-10T11:53:00: PM2 log: App [mental-api:0] starting in -fork mode-
+[34mPM2        | [39m2021-12-10T11:53:01: PM2 log: App [mental-api:0] online
+
+[90m/home/ubuntu/.pm2/logs/mental-api-error.log last 15 lines:[39m
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mmissing 'error' handler on this Redis client
+[31m0|mental-a | [39mTerminated
+[31m0|mental-a | [39merror Command failed with exit code 143.
+
+[90m/home/ubuntu/.pm2/logs/mental-api-out.log last 15 lines:[39m
+[32m0|mental-a | [39m52:13","trace":[{"column":16,"file":"node:net","function":"Server.setupListenHandle [as _listen2]","line":1319,"method":"setupListenHandle [as _listen2]","native":false},{"column":12,"file":"node:net","function":"listenInCluster","line":1367,"method":null,"native":false},{"column":7,"file":"node:net","function":"Server.listen","line":1454,"method":"listen","native":false},{"column":24,"file":"/var/www/eupheme-api/node_modules/express/lib/application.js","function":"Function.listen","line":618,"method":"listen","native":false},{"column":32,"file":"/var/www/eupheme-api/dist/app.js","function":"App.listen","line":51,"method":"listen","native":false},{"column":9,"file":"/var/www/eupheme-api/dist/server.js","function":null,"line":37,"method":null,"native":false},{"column":5,"file":"node:internal/process/task_queues","function":"processTicksAndRejections","line":96,"method":null,"native":false}]}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ETIMEDOUT","name":"Error","stack":"Error: connect ETIMEDOUT\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/index.js:318:37)\n    at Object.onceWrapper (node:events:513:28)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at Socket._onTimeout (node:net:486:8)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"},"timestamp":"2021-12-10 11:52:22"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ETIMEDOUT","name":"Error","stack":"Error: connect ETIMEDOUT\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/index.js:318:37)\n    at Object.onceWrapper (node:events:513:28)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at Socket._onTimeout (node:net:486:8)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"},"timestamp":"2021-12-10 11:52:32"}
+[32m0|mental-a | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ETIMEDOUT","name":"Error","stack":"Error: connect ETIMEDOUT\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/index.js:318:37)\n    at Object.onceWrapper (node:events:513:28)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at Socket._onTimeout (node:net:486:8)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"},"timestamp":"2021-12-10 11:52:42"}
+[32m0|mental-a | [39minfo Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+[32m0|mental-a | [39myarn run v1.22.17
+[32m0|mental-a | [39m$ NODE_PATH=dist/ node dist/server.js
+[32m0|mental-a | [39m✅️ Default Connection established
+[32m0|mental-a | [39m✅️ Background Connection established
+[32m0|mental-a | [39m✅️ User Connection established
+[32m0|mental-a | [39m🔥 DB successfully connected!
+[32m0|mental-a | [39mSocket server is listening on the port 9002
+[32m0|mental-a | [39mApp listening on the port 9001
+
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ETIMEDOUT","name":"Error","stack":"Error: connect ETIMEDOUT\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/index.js:318:37)\n    at Object.onceWrapper (node:events:513:28)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at Socket._onTimeout (node:net:486:8)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"},"timestamp":"2021-12-10 11:53:12"}
+[31m0|mental-api  | [39mmissing 'error' handler on this Redis client
+[32m0|mental-api  | [39m[31merror[39m: Redis Client Init error {"meta":{"MODULE":"REDIS","context":"DEFAULT","message":"connect ETIMEDOUT","name":"Error","stack":"Error: connect ETIMEDOUT\n    at Socket.<anonymous> (/var/www/eupheme-api/node_modules/ioredis/built/redis/index.js:318:37)\n    at Object.onceWrapper (node:events:513:28)\n    at Socket.emit (node:events:394:28)\n    at Socket.emit (node:domain:475:12)\n    at Socket._onTimeout (node:net:486:8)\n    at listOnTimeout (node:internal/timers:557:17)\n    at processTimers (node:internal/timers:500:7)"},"timestamp":"2021-12-10 11:53:22"}
+^C
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ p[Kpm2 kill
+[32m[PM2] [39mApplying action deleteProcessId on app [all](ids: [ 0 ])
+[32m[PM2] [39m[mental-api](0) ✓
+[32m[PM2] [39m[v] All Applications Stopped
+[32m[PM2] [39m[v] PM2 Daemon Stopped
+]0;ubuntu@ip-172-31-19-128: /var/www/eupheme-api[01;32mubuntu@ip-172-31-19-128[00m:[01;34m/var/www/eupheme-api[00m$ sudo apt-get install redis-tools
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+Reading state information... 0%Reading state information... 0%Reading state information... Done
+The following additional packages will be installed:
+  libatomic1 libhiredis0.14 libjemalloc2 liblua5.1-0 lua-bitop lua-cjson
+Suggested packages:
+  ruby-redis
+The following NEW packages will be installed:
+  libatomic1 libhiredis0.14 libjemalloc2 liblua5.1-0 lua-bitop lua-cjson redis-tools
+0 upgraded, 7 newly installed, 0 to remove and 40 not upgraded.
+Need to get 887 kB of archives.
+After this operation, 3955 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+0% [Working]            Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal-updates/main amd64 libatomic1 amd64 10.3.0-1ubuntu1~20.04 [9284 B]
+1% [1 libatomic1 9284 B/9284 B 100%]                                    4% [Working]            Get:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 libhiredis0.14 amd64 0.14.0-6 [30.2 kB]
+6% [2 libhiredis0.14 26.1 kB/30.2 kB 86%]                                         9% [Working]            Get:3 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 libjemalloc2 amd64 5.2.1-1ubuntu1 [235 kB]
+9% [3 libjemalloc2 0 B/235 kB 0%]                                 33% [Working]             Get:4 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 liblua5.1-0 amd64 5.1.5-8.1build4 [99.9 kB]
+33% [4 liblua5.1-0 0 B/99.9 kB 0%]                                  45% [Working]             Get:5 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 lua-bitop amd64 1.0.2-5 [6680 B]
+45% [5 lua-bitop 0 B/6680 B 0%]                               49% [Working]             Get:6 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 lua-cjson amd64 2.1.0+dfsg-2.1 [17.4 kB]
+49% [6 lua-cjson 0 B/17.4 kB 0%]                                53% [Working]             Get:7 http://us-east-2.ec2.archive.ubuntu.com/ubuntu focal/universe amd64 redis-tools amd64 5:5.0.7-2 [489 kB]
+53% [7 redis-tools 0 B/489 kB 0%]                                 100% [Working]              Fetched 887 kB in 0s (17.2 MB/s)
+Selecting previously unselected package libatomic1:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 64373 files and directories currently installed.)
+Preparing to unpack .../0-libatomic1_10.3.0-1ubuntu1~20.04_amd64.deb ...
+Unpacking libatomic1:amd64 (10.3.0-1ubuntu1~20.04) ...
+Selecting previously unselected package libhiredis0.14:amd64.
+Preparing to unpack .../1-libhiredis0.14_0.14.0-6_amd64.deb ...
+Unpacking libhiredis0.14:amd64 (0.14.0-6) ...
+Selecting previously unselected package libjemalloc2:amd64.
+Preparing to unpack .../2-libjemalloc2_5.2.1-1ubuntu1_amd64.deb ...
+Unpacking libjemalloc2:amd64 (5.2.1-1ubuntu1) ...
+Selecting previously unselected package liblua5.1-0:amd64.
+Preparing to unpack .../3-liblua5.1-0_5.1.5-8.1build4_amd64.deb ...
+Unpacking liblua5.1-0:amd64 (5.1.5-8.1build4) ...
+Selecting previously unselected package lua-bitop:amd64.
+Preparing to unpack .../4-lua-bitop_1.0.2-5_amd64.deb ...
+Unpacking lua-bitop:amd64 (1.0.2-5) ...
+Selecting previously unselected package lua-cjson:amd64.
+Preparing to unpack .../5-lua-cjson_2.1.0+dfsg-2.1_amd64.deb ...
+Unpacking lua-cjson:amd6
