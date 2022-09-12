@@ -6,7 +6,7 @@ type WhiteListType = {
 };
 const WHITE_LIST: WhiteListType = {
   development: [
-    'http://localhost:3000/',
+    'http://localhost:3000',
     'https://euphoria-frontend-dev.vercel.app/',
     'https://dev.d7jsz8pwi81mx.amplifyapp.com',
     'https://euphoria-frontend.vercel.app',
