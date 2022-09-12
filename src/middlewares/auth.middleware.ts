@@ -29,6 +29,7 @@ export default async function authMiddleware(req: IRequest, res: Response, next:
   }
 
   const { User } = req.context.conn;
+  console.log("token parsed", tokenParsed)
   const user = await User.findById(tokenParsed.id);
 
   if (!user) {

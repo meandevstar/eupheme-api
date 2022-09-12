@@ -1,5 +1,6 @@
 import { Joi } from 'common/utils';
 import { UserStatus, UserType } from 'models/types';
+Joi.objectId = require('joi-objectid')(Joi);
 import {
   emailSchema,
   mongooseIdSchema,
@@ -39,6 +40,14 @@ export const userUpdateSchema = {
   dob: Joi.string(),
   phone: Joi.string(),
   avatar: Joi.string(),
+};
+
+export const userProfileSchema = {
+  id: Joi.objectId().required(),
+};
+export const flirtRequestSchema = {
+  toId: Joi.objectId().required(),
+  flirtback: Joi.boolean(),
 };
 
 export const getUsersSchema = {

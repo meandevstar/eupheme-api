@@ -185,7 +185,7 @@ export async function getUpcomingSessions(context: IAppContext, payload: IQueryP
     ...payload.query,
     status: SessionStatus.Pending,
     endTime: new Date(),
-    $or: [{ user: sessionUser.id }, { provider: sessionUser.id }],
+    participants: sessionUser.id,
   };
 
   // setting default values for pagination
@@ -393,8 +393,8 @@ function sendSessionNotification(
     <br/>
     <b>Attendees</b>:
     <ul>
-      <li>Doctor: ${targetName}</li>
-      <li>User: ${userName}</li>
+      <li>Creator: ${targetName}</li>
+      <li>Enjoyer: ${userName}</li>
     </ul>
     <br/>
     Visit your dashboard <a href='${config.frontHost}/dashboard'>here</a>

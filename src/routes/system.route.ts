@@ -51,7 +51,7 @@ export default class SystemRoute implements IRoute {
           buf,
           (files.file as formidable.File).mimetype,
           uploadPath,
-          JSON.parse(fields.private as string || 'false'),
+          JSON.parse((fields.private as string) || 'false')
         );
 
         return fileUrl;

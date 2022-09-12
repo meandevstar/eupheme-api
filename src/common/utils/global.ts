@@ -7,6 +7,8 @@ import { DateTime } from 'luxon';
 import { IJoi, IRequest, StatusCode } from 'common/types';
 import CustomError from 'common/errors/custom-error';
 import { ISessionDocument, IWorkingHour } from 'models/types';
+import Config from 'common/config';
+import { createHash } from 'crypto';
 
 const MEETING_DURATION = {
   minutes: 30,
@@ -330,3 +332,10 @@ export function formidablePromise(
     });
   });
 }
+
+export function verifyPassword (userPassword: string, dbPassword: string) {
+  const pwdHash = createHash('sha256', Config.pwdSecret).update(userPassword).digest('base64');
+  // console.log('this.password', this.password);
+  console.log('passed password', userPassword);
+  return dbPassword === pwdHash;
+};

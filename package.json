@@ -7,6 +7,7 @@
     "start": "ts-node -r tsconfig-paths/register --transpile-only src/server.ts",
     "start:prod": "NODE_PATH=dist/ node dist/server.js",
     "dev": "nodemon --watch src --delay 1 --exec 'ts-node' -r tsconfig-paths/register src/server.ts",
+    "dev:local": "nodemon --watch src --delay 1 --exec 'ts-node' -r tsconfig-paths/register src/server.ts",
     "build": "rm -rf dist && tsc -p ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,6 +36,7 @@
     "jest": "^27.2.0",
     "jimp": "^0.16.1",
     "joi": "^17.4.2",
+    "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "luxon": "^2.2.0",

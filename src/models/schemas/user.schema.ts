@@ -58,6 +58,7 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
   phone: String,
   dob: Date,
   idUrl: String,
+  about: String,
   notifications: {
     email: {
       [NotificationType.IncomingSession]: {
@@ -74,11 +75,15 @@ const userSchema = new IBaseSchema<IUserDocument, IUserModel>({
       },
     },
   },
+  publicStoryImages: Array,
+  privateVideosThumbnails: Array,
+  privateImagesThumbnails: Array,
 });
 
 userSchema.plugin(slugify);
 
 userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserType) {
+  console.log('document', doc);
   const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
   const allowedFields = [
     'id',
@@ -93,6 +98,8 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
     'status',
     'pronoun',
     'gender',
+    'idUrl',
+    'about',
   ];
 
   if (!grant || grant === UserType.Admin) {
@@ -100,11 +107,36 @@ userSchema.statics.getPublicData = function (doc: IUserDocument, grant?: UserTyp
   }
   return pick(payload, allowedFields);
 };
+userSchema.statics.getProfileData = function (doc: IUserDocument, grant?: UserType) {
+  console.log('document', doc);
+  const payload = doc.toJSON ? doc.toJSON({ virtuals: true }) : doc;
+  const allowedFields = [
+    'id',
+    'name',
+    'displayName',
+    'about',
+    'timezone',
+    'type',
+    'status',
+    'pronoun',
+    'idUrl',
+  ];
 
-userSchema.methods.verifyPassword = function (password: string) {
-  const pwdHash = createHash('sha256', Config.pwdSecret).update(password).digest('base64');
-  return this.password === pwdHash;
+  if (!grant || grant === UserType.Admin) {
+    // allowedFields.push('dob', 'phone');
+  }
+  if (doc && doc.type === UserType.Creator) {
+    allowedFields.push('publicStoryImages', 'privateVideosThumbnails', 'privateImagesThumbnails');
+  }
+  return pick(payload, allowedFields);
 };
+
+// userSchema.methods.verifyPassword = function (password: string) {
+//   const pwdHash = createHash('sha256', Config.pwdSecret).update(password).digest('base64');
+//   console.log('this.password', this.password)
+//   console.log('passed password', password)
+//   return this.password === pwdHash;
+// };
 
 userSchema.methods.getToken = function () {
   const payload = {

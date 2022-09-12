@@ -5,7 +5,7 @@ import config from 'common/config';
 import { ConnType, IAppContext, IRoute } from 'common/types';
 import responseHandler from 'middlewares/response.middleware';
 import corsHandler from 'middlewares/cors.middleware';
-import * as SocketModule from 'modules/lib/socket.module';
+// import * as SocketModule from 'modules/lib/socket.module';
 import { Server } from 'http';
 
 class App {
@@ -31,7 +31,7 @@ class App {
       this.initMiddlewares(bgContext);
       this.initRoutes(routes);
       this.app.use(responseHandler);
-      process.on('SIGINT', this.exitHandler.bind(null, { exit: true }));
+      // process.on('SIGINT', this.exitHandler.bind(null, { exit: true }));
     }
   }
 
@@ -77,7 +77,7 @@ class App {
         conn: getConnection(ConnType.Default),
       };
 
-      SocketModule.initialize(bgContext);
+      // SocketModule.initialize(bgContext);
 
       return bgContext;
     } catch (error) {
@@ -86,7 +86,7 @@ class App {
   }
 
   public async exitHandler(options: { exit: boolean; cleanup: boolean }, exitCode: number) {
-    await Promise.all([SocketModule.closeSocketServer(), disconnect()]);
+    // await Promise.all([SocketModule.closeSocketServer(), disconnect()]);
 
     if (this.server) {
       this.server.close();

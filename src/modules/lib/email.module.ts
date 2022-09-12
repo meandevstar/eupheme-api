@@ -3,7 +3,7 @@ import sgMail from '@sendgrid/mail';
 import { IEmailPayload } from 'common/types';
 import logger from './logger.module';
 
-sgMail.setApiKey(config.sendgridApiKey);
+// sgMail.setApiKey(config.sendgridApiKey);
 
 const MODULE = 'EMAIL';
 

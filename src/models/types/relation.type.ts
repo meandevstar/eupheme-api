@@ -5,6 +5,7 @@ import { IUserDocument } from './user.type';
 export enum RelationType {
   Flirt = 'FLIRT',
   Report = 'REPORT',
+  Favorite = 'FAVORITE',
 }
 
 export interface IRelation {

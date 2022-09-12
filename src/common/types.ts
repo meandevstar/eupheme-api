@@ -11,6 +11,8 @@ import {
   INotificationModel,
   IRoomModel,
   IMediaModel,
+  IFlirtRequestModel,
+  ISpecialRequestModel,
 } from 'models/types';
 
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
@@ -100,10 +102,13 @@ export interface IConnection extends Connection {
   Message?: IMessageModel;
   Media?: IMediaModel;
   Notification?: INotificationModel;
+  Flirt?: IFlirtRequestModel;
+  SpecialRequest?: ISpecialRequestModel;
 }
 
 export interface IBaseModel<T> extends Model<T> {
   getPublicData?: (doc: T | LeanDocument<T>, grant?: UserType) => Partial<T | LeanDocument<T>>;
+  getProfileData?: (doc: T | LeanDocument<T>, grant?: UserType) => Partial<T | LeanDocument<T>>;
 }
 
 export interface IBaseDocument<T> extends Document<Types.ObjectId, any, T> {
@@ -220,6 +225,7 @@ export enum ConnType {
   Session = 'Session',
   Chats = 'Chats',
   Profile = 'Profile',
+  Flirt = 'Flirt',
 }
 
 export enum RouterConfig {
@@ -228,6 +234,7 @@ export enum RouterConfig {
   Session = ConnType.Session,
   Chats = ConnType.Chats,
   Profile = ConnType.Profile,
+  Flirt = ConnType.Flirt,
 }
 
 export enum ErrorModule {
