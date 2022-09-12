@@ -21,6 +21,7 @@ class App {
 
   public async init(routes: IRoute[], isCron?: boolean) {
     this.port = config.port;
+    console.log('CONFIG: ', JSON.stringify(this.port));
     this.env = process.env.NODE_ENV === 'production' ? true : false;
 
     const bgContext = await this.preprocess(isCron);
