@@ -1,0 +1,10 @@
+{
+  apps : [{
+    name   : "mental-api",
+    script : "yarn",
+    args: "start:prod",
+    env: {
+      NODE_ENV: "development",
+    }
+  }]
+}

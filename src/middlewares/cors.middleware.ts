@@ -10,6 +10,7 @@ const WHITE_LIST: WhiteListType = {
     'https://euphoria-frontend-dev.vercel.app/',
     'https://dev.d7jsz8pwi81mx.amplifyapp.com',
     'https://euphoria-frontend.vercel.app',
+    'https://jsfiddle.net',
   ],
   production: [],
 };
@@ -18,9 +19,9 @@ export default (req: IRequest, res: Response, next: NextFunction) => {
   const origin = req.get('origin');
   const env = process.env.NODE_ENV as Environment;
 
-  if (WHITE_LIST[env].indexOf(origin) !== -1) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  //  if (WHITE_LIST[env].indexOf(origin) !== -1) {
+  //    res.header('Access-Control-Allow-Origin', origin);
+  //  }
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
