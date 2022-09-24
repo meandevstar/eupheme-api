@@ -49,6 +49,10 @@ export const flirtRequestSchema = {
   toId: Joi.objectId().required(),
   flirtback: Joi.boolean(),
 };
+export const sendSpecialRequestSchema = {
+  userId: Joi.objectId().required(),
+  specialMessage: Joi.string().min(10, 'utf8'),
+};
 
 export const getUsersSchema = {
   ...paginationSchema,

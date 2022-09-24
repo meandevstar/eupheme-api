@@ -11,6 +11,7 @@ import {
   UpdatedMediaUrlPayload,
   IMedia,
   IMediaType,
+  ISpecialRequest,
 } from 'models/types';
 import { getAuthTokens } from './auth.module';
 import * as s3 from './lib/s3.module';
@@ -104,6 +105,31 @@ export async function updateProfile(context: IAppContext, payload: Partial<IUser
   await user.save();
 
   return User.getPublicData(user);
+}
+
+export async function sendSpecialRequest(context: IAppContext, payload: Partial<ISpecialRequest>) {
+  const {
+    user,
+    conn: { User, SpecialRequest },
+  } = context;
+  console.log('Yes I am here', payload);
+  const senderid = user.id;
+  const userId = payload.userId;
+  const specialMessage = payload.specialMessage;
+  // SpecialRequest
+  try {
+    const SR = await new SpecialRequest({ senderid, userId, specialMessage }).save();
+    return SR;
+  } catch (error) {
+    throw createError(StatusCode.BAD_REQUEST, error.message);
+  }
+
+  // let specialRequest =
+  // Object.assign(user, payload);
+  // await user.save();
+
+  // return { senderId: senderId, message: message, userID: userId };
+  // return payload;
 }
 
 export async function getUsers(context: IAppContext, payload: IQueryPayload) {

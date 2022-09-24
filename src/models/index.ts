@@ -11,6 +11,7 @@ import {
   INotificationDocument,
   IMediaDocument,
   IFlirtRequestDocument,
+  ISpecialRequestDocument,
 } from 'models/types';
 import sessionSchema from './schemas/session.schema';
 import roomSchema from './schemas/room.schema';
@@ -18,6 +19,7 @@ import messageSchema from './schemas/message.schema';
 import notificationSchema from './schemas/notification.schema';
 import mediaSchema from './schemas/media.schema';
 import flirtRequestSchema from './schemas/flirtRequest.schema';
+import specialRequestSchema from './schemas/specialRequest.schema';
 
 const connections: IDBConnectionMap = {};
 
@@ -28,6 +30,11 @@ function registerModels(conn: IConnection) {
   conn.Message = conn.model<IMessageDocument>('Message', messageSchema, 'messages');
   conn.Media = conn.model<IMediaDocument>('Media', mediaSchema, 'medias');
   conn.Flirt = conn.model<IFlirtRequestDocument>('Flirt', flirtRequestSchema, 'flirts');
+  conn.SpecialRequest = conn.model<ISpecialRequestDocument>(
+    'SpecialRequest',
+    specialRequestSchema,
+    'SpecialRequest'
+  );
   conn.Notification = conn.model<INotificationDocument>(
     'Notification',
     notificationSchema,
@@ -41,7 +48,8 @@ function registerModels(conn: IConnection) {
   conn.Message.createCollection();
   conn.Media.createCollection();
   conn.Notification.createCollection();
-
+  conn.Flirt.createCollection();
+  conn.SpecialRequest.createCollection();
   // ensure indexes
   conn.User.ensureIndexes();
   conn.Session.ensureIndexes();
@@ -49,6 +57,8 @@ function registerModels(conn: IConnection) {
   conn.Message.ensureIndexes();
   conn.Media.ensureIndexes();
   conn.Notification.ensureIndexes();
+  conn.Flirt.ensureIndexes();
+  conn.SpecialRequest.ensureIndexes();
 }
 
 export async function connect(singleConnMode?: boolean, uri?: string) {

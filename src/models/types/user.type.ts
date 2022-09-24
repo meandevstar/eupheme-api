@@ -12,6 +12,12 @@ export enum UserStatus {
   Disabled = 'DISABLED',
   Pending = 'PENDING',
 }
+export enum SpecialRequestStatus {
+  Accepted = 'ACCEPTED',
+  Declined = 'DECLINED',
+  Pending = 'PENDING',
+  Counter = 'COUNTERED',
+}
 
 export enum Pronoun {
   He = 'HE',
@@ -92,6 +98,6 @@ export interface UpdatedMediaUrlPayload {
   userId?: string;
   mediaType?: string;
   url?: string;
-  fileName?:string
-  isStory?:boolean
+  fileName?: string;
+  isStory?: boolean;
 }

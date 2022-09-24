@@ -10,6 +10,7 @@ import * as UserModule from 'modules/users.module';
 import {
   flirtRequestSchema,
   getUsersSchema,
+  sendSpecialRequestSchema,
   userLoginSchema,
   userProfileSchema,
   userRegisterSchema,
@@ -166,6 +167,16 @@ export default class UserRoute implements IRoute {
         const users = await UserModule.getUsers(req.context, queryPayload);
 
         return users;
+      })
+    );
+    this.router.post(
+      '/sendspecialrequest',
+      validate(sendSpecialRequestSchema),
+      isAuthenticated,
+      createController(async (req: IRequest, res: any) => {
+        const result = await UserModule.sendSpecialRequest(req.context, req.context.payload);
+
+        return result;
       })
     );
     this.router.post(

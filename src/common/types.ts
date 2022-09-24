@@ -226,6 +226,7 @@ export enum ConnType {
   Chats = 'Chats',
   Profile = 'Profile',
   Flirt = 'Flirt',
+  SpecialRequest = 'SpecialRequest',
 }
 
 export enum RouterConfig {
@@ -235,6 +236,7 @@ export enum RouterConfig {
   Chats = ConnType.Chats,
   Profile = ConnType.Profile,
   Flirt = ConnType.Flirt,
+  SpecialRequest = ConnType.SpecialRequest,
 }
 
 export enum ErrorModule {

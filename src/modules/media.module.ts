@@ -20,8 +20,8 @@ export async function uploadProfileMedia(context: IAppContext, payload: IMediaUp
   // generate private file
   mediaPayload.type = file.mimetype.split('/')[0] as IMediaType;
   const dirName = `${mediaPayload.type}s`;
-
   let jimpFile = await jimp.read(file.filepath);
+  console.log('jimpFile', jimpFile);
   const originalBuf = await jimpFile.getBufferAsync(MIME_PNG);
 
   const fileName = `file_${Date.now()}`;
@@ -62,10 +62,10 @@ export async function getProfileMedias(context: IAppContext, payload: IQueryPayl
     conn: { Media },
   } = context;
   const { query, sort, pagination } = payload;
-
   const mediaQuery: any = {};
   // just pass query for now
   Object.assign(mediaQuery, pick(query, ['target', 'type']));
+  mediaQuery['creator'] = user.id;
 
   const countAction = Media.find(mediaQuery).countDocuments();
   let queryAction = Media.find(mediaQuery);

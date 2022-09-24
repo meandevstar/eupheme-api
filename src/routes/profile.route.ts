@@ -27,6 +27,7 @@ export default class ProfileRoute implements IRoute {
     this.router.get(
       '/media',
       validate(paginationSchema),
+      isAuthenticated,
       createController(async (req: IRequest) => {
         const {
           payload: { limit, offset, sort, ...query },

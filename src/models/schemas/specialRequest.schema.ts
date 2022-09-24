@@ -1,11 +1,13 @@
 import { Schema } from 'mongoose';
 import {
-    ISpecialRequestDocument,
-    ISpecialRequestModel
- } from 'models/types';
+  ISpecialRequestDocument,
+  ISpecialRequestModel,
+  SpecialRequestStatus,
+  UserStatus,
+} from 'models/types';
 import { IBaseSchema } from 'common/types';
 
-const specialRequestSchema = new IBaseSchema<ISpecialRequestDocument,ISpecialRequestModel>({
+const specialRequestSchema = new IBaseSchema<ISpecialRequestDocument, ISpecialRequestModel>({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -16,9 +18,19 @@ const specialRequestSchema = new IBaseSchema<ISpecialRequestDocument,ISpecialReq
     required: true,
     ref: 'User',
   },
- 
-  message: String,
-  offermoney: Number,
+  specialMessage: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: Object.values(SpecialRequestStatus),
+    default: SpecialRequestStatus.Pending,
+  },
+  offeredmoney: {
+    type: Number,
+    required: false,
+  },
 });
 
 specialRequestSchema.index({ creator: 1 });
