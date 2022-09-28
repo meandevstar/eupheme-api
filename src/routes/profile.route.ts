@@ -75,5 +75,29 @@ export default class ProfileRoute implements IRoute {
         return result;
       })
     );
+    //upload video file
+    this.router.post(
+      '/videomedia',
+      isAuthenticated,
+      createController(async (req: IRequest, res: any) => {
+        const { fields, files } = await formidablePromise(req);
+        if (!files.file) {
+          return createError(StatusCode.BAD_REQUEST, 'file field is required');
+        }
+
+        // validate
+        const cusReq = {
+          body: {
+            ...fields,
+            file: files.file as formidable.File,
+          },
+          context: {},
+        } as any;
+        await promisify(validate(mediaRegistrationSchema))(cusReq, res);
+
+        const result = await MediaModule.uploadPrivateVideos(req.context, cusReq.context.payload);
+        return result;
+      })
+    );
   }
 }

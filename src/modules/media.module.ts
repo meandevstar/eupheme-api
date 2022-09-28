@@ -84,3 +84,46 @@ export async function getProfileMedias(context: IAppContext, payload: IQueryPayl
   // check user plan and restrict image access
   return { total, data: medias };
 }
+
+export async function uploadPrivateVideos(context: IAppContext, payload: IMediaUploadPayload) {
+  const {
+    user,
+    conn: { Media },
+  } = context;
+  const { file, name, description, public: isPublic } = payload;
+  const mediaPayload: IMedia = {
+    name,
+    description,
+    creator: user.id,
+    private: !isPublic,
+  };
+
+  // generate private file
+  mediaPayload.type = file.mimetype.split('/')[0] as IMediaType;
+  const dirName = `${mediaPayload.type}s`;
+  // let jimpFile = await jimp.read(file.filepath);
+  // console.log('jimpFile', jimpFile);
+  // const originalBuf = await jimpFile.getBufferAsync(MIME_PNG);
+
+  const fileName = `file_${Date.now()}`;
+  mediaPayload.file = await uploadFile(
+    // originalBuf,
+    Buffer.from(file.filepath),
+    file.mimetype,
+    `${dirName}/${fileName}`,
+    !isPublic
+  );
+  // if (isPublic) {
+  //   // generate blurred file
+  //   const blurredBuf = await jimpFile.blur(8).getBufferAsync(MIME_PNG);
+  //   mediaPayload.blurred = await uploadFile(
+  //     blurredBuf,
+  //     file.mimetype,
+  //     `${dirName}/blr_${fileName}`
+  //   );
+  // }
+
+  const media = await new Media(mediaPayload).save();
+
+  return media.beautify();
+}
